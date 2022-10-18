@@ -9,49 +9,60 @@ SI 1 2022/2
 #include <stdbool.h>
 #include <stdlib.h>
 
-/* Neste program, o usuário escolhe um número e o computador tenta adivinhar
-   usando a função rand(), a cada tentativa ele devolve o número ao usuário,
-   que deve dizer se acertou, ou se o número é maior ou menor. No fim, o pro-
-   grama devolve quantas tentativas foram necessárias até acertar o número. */
+/* Neste program, o usuario escolhe um numero e o computador tenta adivinhar
+   usando a funcao rand(), a cada tentativa ele devolve o numero ao usuario,
+   que deve dizer se acertou, ou se o numero e maior ou menor. No fim, o pro-
+   grama devolve quantas tentativas foram necessarias ate acertar o numero. */
+
+
+int randEntre(max, min){
+
+    /*
+        Essa funcao recebe duas variaveis, um valor maximo e um valor minimo,
+        devolvendo um numero dentro do intervalo entre os dois, sem contar pa-
+        os dois mesmos. A soma do 1 no min ajuda a nao repetir o numero minimo
+        e a subtracao de 1 no rand()%() ajuda a nao chegar ao numero maximo. Por
+        exemplo, max = 10 e min = 5, temp rand() % 4 = 0, 1, 2 ou 3 + 6, logo
+        podemos ter 6, 7, 8 ou 9.
+    */
+
+    int valor;
+    valor = rand() % (max - min - 1) + min + 1;
+    return valor;
+
+}
+
 
 int main(){
 
-    int numero, acerto; // Declaração Variáveis de entrada
-    int chute, divisor_max, divisor_min = 0; // Declaração Variáveis Intermediárias
-    int contador, somador; // Declaração Variável de saída
+    int acerto; // Declara??o Vari?veis de entrada
+    int chute, divisor_max, divisor_min = 0; // Declaracao Variaveis Intermediarias
+    int contador; // Declaracao Variavel de saida
 
-    printf("Digite um numero para o computador adivinhar: ");
-    scanf("%d", &numero); //Entrada do número que desejamos que o computador adivinhe
-
-    divisor_max = 100; //Atribui 100 ao divisor máximo do rand, logo os valores serão de 0 a 99
+    divisor_max = 100; //Atribui 100 ao divisor maximo do rand, logo os valores serao de 0 a 99
     contador = 0; //Contador de chances que o computador demora para acertar
-    somador = 1; //Valor atribuído após o resto da divisão com os divisores e o rand
+
+    printf("Pense em um numero, o computador ira tentar adivinhar...");
+
+    srand(time(0)); //Gera uma nova cadeia de numeros aleatoios
 
     while (true) {
 
-        /*
-          Programa irá gerar números aleatórios de acordo com uma lógica. Esses valores
-          deverão estar dentro de um intervalo que começa no somador e tem tamanho da
-          diferença do divisor máximo com o divisor mínimo. Por exemplo, se max = 30, min =
-          20 e somador = 20, logo teremos um intervalo de 20 a 30 para o computador chutar
-        */
-
-        srand(time(0)); //Gera uma nova cadeia de números aleatórios
-        chute = rand() % (divisor_max - divisor_min)+ somador;
+        chute = randEntre(divisor_max, divisor_min);
 
         /*
-          Layout de entrada e saída. Computador da como saída o número que chutou, enquanto o
-          usuária indica se está ou não certo.
+          Layout de entrada e saida. Computador da como saida o numero que chutou, enquanto o
+          usuarioindica se esta ou nao certo.
         */
 
-        printf("Numero chutado: %d", chute);
+        printf("\nNumero chutado: %d", chute);
         printf("\n0 - Digite se acertou\n1 - Digite se chute e maior\n2 - Digite se chute e menor");
         scanf("%d", &acerto);
         contador += 1; // Contador de chances para acertar
 
-        /*Lógica do programa: se chutou igual, cabe ao usuário indicar e o laço acaba.
-          Se o chute for maior, o divisor máximo passa a ser esse valor
-          Se o chute for menor, o divisor mínimo passa a ser esse valor e o somador também.
+        /*Logica do programa: se chutou igual, cabe ao usuario indicar e o laco acaba.
+          Se o chute for maior, o divisor maximo passa a ser esse valor
+          Se o chute for menor, o divisor manimo passa a ser esse valor e o somador tambem.
         */
 
         if(acerto == 0){
@@ -60,10 +71,9 @@ int main(){
             divisor_max = chute;
         }else{
             divisor_min = chute;
-            somador = chute;
         }
     }
 
-    printf("\nComputador acertou o numero %d com %d chutes.\n", numero, contador); //Saída do programa com o número e as chances usadas
+    printf("\nComputador acertou o numero com %d chutes.\n", contador); //Saida do programa com o numero e as chances usadas
 
 }
