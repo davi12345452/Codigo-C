@@ -20,14 +20,11 @@ int randEntre(max, min){
     /*
         Essa funcao recebe duas variaveis, um valor maximo e um valor minimo,
         devolvendo um numero dentro do intervalo entre os dois, sem contar pa-
-        os dois mesmos. A soma do 1 no min ajuda a nao repetir o numero minimo
-        e a subtracao de 1 no rand()%() ajuda a nao chegar ao numero maximo. Por
-        exemplo, max = 10 e min = 5, temp rand() % 4 = 0, 1, 2 ou 3 + 6, logo
-        podemos ter 6, 7, 8 ou 9.
+        os dois mesmos. Devolve
     */
 
     int valor;
-    valor = rand() % (max - min - 1) + min + 1;
+    valor = rand() % (max - min) + min;
     return valor;
 
 }
@@ -68,9 +65,9 @@ int main(){
         if(acerto == 0){
             break;
         }else if(acerto == 1){
-            divisor_max = chute;
+            divisor_max = chute - 1;
         }else{
-            divisor_min = chute;
+            divisor_min = chute + 1;
         }
     }
 
