@@ -1,7 +1,7 @@
-#include <stdio.h>
+#include<stdio.h>
 
 /* Enunciado: Altere o programa acima, para que ele calcule a sua idade aproximada
-  (inicialize uma variável com o ano do seu nascimento e outra com o ano corrente).*/
+  (inicialize uma variï¿½vel com o ano do seu nascimento e outra com o ano corrente).*/
 
 int main(){
 
