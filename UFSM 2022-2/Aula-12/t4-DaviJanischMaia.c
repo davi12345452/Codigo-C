@@ -1,8 +1,17 @@
+//T4
+//Davi Janisch Maia
+//SI1
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-#define CONSTANTE_X 35.0
+#define CONSTANTE_X 35
+#define TAMANHO_STRING 75
+
+/*
+    Função que recebe um vetor e devolve o termo com maior valor
+*/
 
 float encontraMaior(float vetor[]){
     float maior = 0;
@@ -13,6 +22,10 @@ float encontraMaior(float vetor[]){
     }
     return maior;
 }
+
+/*
+    Função recebe dois vetores e devolve o termo com maior valor entre eles
+*/
 
 float maiorEntreVetores(float vetor1[], float vetor2[]){
     float maior1, maior2;
@@ -25,70 +38,49 @@ float maiorEntreVetores(float vetor1[], float vetor2[]){
     }
 }
 
-int porcentagemParaX(float maior, float valor){
-    int porcentagem;
-    porcentagem = (int)(CONSTANTE_X * (valor / maior));
-    return porcentagem;
+/*
+    Função que calcula a quantidade de X para um valor,
+    levando em conta o maior termo e a constante que
+    equivale esse maior valor à 35.
+*/
+
+int tamanhoDeX(float maior, float valor){
+    int tamanho;
+    tamanho = (int)(CONSTANTE_X * (valor / maior));
+    return tamanho;
 }
 
-void geraLinhaX(float maior, float valor1, float valor2, int idadeIndice){
-    int porcentagemV1 = porcentagemParaX(maior, valor1);
-    int porcentagemV2 = porcentagemParaX(maior, valor2);
-    int espaco;
-    espaco = (int)CONSTANTE_X - porcentagemV1;
-    for(int i = 0; i < espaco; i++){
-        printf("%s", " ");
+void linhaDeX(float maior, float valor1, float valor2, int faixaIdade){
+    int tamanhoStr1 = tamanhoDeX(maior, valor1);
+    int tamanhoStr2 = tamanhoDeX(maior, valor2);
+    char stringV1[CONSTANTE_X] ="\0", stringV2[CONSTANTE_X]="\0";
+
+    for(int i = 0; i < tamanhoStr1; i++){
+        strcat(stringV1, "X");
     }
-    for(int j = 0; j < porcentagemV1; j++){
-        printf("%s", "X");
+    for(int j = 0; j < tamanhoStr2; j++){
+        strcat(stringV2, "X");
     }
-    printf(" %d ", idadeIndice);
-    for(int k = 0; k < porcentagemV2; k++){
-        printf("%s", "X");
+
+    if(faixaIdade < 100){
+        printf("\n%+35s %3d %-35s", stringV1, faixaIdade, stringV2);
+    }else{
+        printf("\n%+35s %+3s %-35s", stringV1, "++", stringV2);
     }
+
 }
 
 void geraPiramide(float vetor1[], float vetor2[]){
     int maior = maiorEntreVetores(vetor1, vetor2);
-    int tamanhoVetor = sizeof(vetor1);
-    for(int i = tamanhoVetor; i < 0; i--){
-        geraLinhaX(maior, vetor1[i], vetor2[i], (i*5));
+    for(int i = 0; i < 21; i++){
+        linhaDeX(maior, vetor1[21-i], vetor2[21-i], (110-(5*i)));
     }
+    printf("\n\n\t\tPIRÂMIDE ETÁRIA");
 }
-
 
 int main(void){
     float ph[21] = { 200, 190, 180, 170, 160, 150, 140, 129, 120, 110, 100, 90, 80, 70, 60, 50, 40, 30, 20, 10, 0 };
     float pf[21] = { 200, 190, 220, 170, 160, 150, 140, 129, 120, 40, 100, 90, 80, 70, 70, 50, 40, 30, 20, 10, 0 };
-    geraLinhaX(220, 180, 120, 50);
     geraPiramide(ph, pf);
     return 0;
 }
-
-
-/*har * geraX(float _maior, float _valor){
-    int porcentagem = porcentagemParaX(_maior, _valor);
-    char *stringDeX;
-    stringDeX = (char*)malloc(porcentagem*sizeof(char));
-    for(int i = 0; i <= porcentagem; i++){
-        strcat(stringDeX, "X");
-    }
-    return stringDeX;
-}*/
-
-/*char * geraLinhaX (float _maior, float _valor1, float _valor2, int faixaIdade){
-    int porcentagemVet1 = porcentagemParaX(_maior, _valor1);
-    int porcentagemVet2 = porcentagemParaX(_maior, _valor2);
-    char stringDeX1[porcentagemVet1], stringDeX2[porcentagemVet2];
-    memset(c_arr, 0, LENGTH);
-    memset(c_arr, 0, LENGTH);
-    //stringDeX1 = (char*)malloc(porcentagemVet1*sizeof(char));
-    //stringDeX2 = (char**)malloc(porcentagemVet2*sizeof(char));
-    for(int i = 0; i < porcentagemVet1; i++){
-        strcat(stringDeX1, "X");
-    }
-    for(int j = 0; j < porcentagemVet2; j++){
-        strcat(stringDeX2, "X");
-    }
-    printf("%+35s%3d %-35s", stringDeX1, faixaIdade, stringDeX2);
-}*/
