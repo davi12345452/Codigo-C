@@ -3,12 +3,10 @@
 //SI1
 
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
 #include <locale.h>
 
 #define CONSTANTE_X 35
-#define TAMANHO_STRING 75
 
 /*
     Função que recebe um vetor e devolve o termo com maior valor
@@ -74,9 +72,9 @@ void linhaDeX(float maior, float valor1, float valor2, int faixaIdade){
     }
 
     if(faixaIdade < 100){
-        printf("\n%+35s %3d %-35s", stringV1, faixaIdade, stringV2);
+        printf("\n%+35s %2d %-35s", stringV1, faixaIdade, stringV2);
     }else{
-        printf("\n%+35s %+3s %-35s", stringV1, "++", stringV2);
+        printf("\n%+35s %+2s %-35s", stringV1, "++", stringV2);
     }
 
 }
