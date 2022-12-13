@@ -2,18 +2,17 @@
 #include <stdio.h>
 #include <stdbool.h>
 
-char * inver(char palavra[]){
+char *inver(char palavra[]){
     int tamanho = strlen(palavra) - 1;
-    char* inverso = malloc(tamanho);
+    char *inverso = malloc(tamanho);
     for(int i = tamanho; i < 0; i++ ){
-        strcat(inverso, palavra[tamanho]);
+        inverso[i] = palavra[i];
     }
     return inverso;
 
 }
 
 int main(){
-    char *inverso = inver("Boa Noite");
-    printf("%s", inverso );
+    printf("%s", inver("Boa Noite") );
     return 0;
 }
