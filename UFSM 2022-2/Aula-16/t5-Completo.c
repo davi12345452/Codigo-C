@@ -6,7 +6,7 @@
 #include <time.h>
 #include <locale.h>
 #include <string.h>
-#include <ctype.h>
+
 
 #define CHANCES 10
 #define N_JOGADAS 4
@@ -41,9 +41,7 @@ void explicaJogo(){
 bool checaJogada(char jogada[], char cores[]){
     int somador = 0, checador;
     //Se a jogador tiver mais ou menos que 4 letras, é falsa
-    if(strlen(jogada) != N_JOGADAS){
-        return false;
-    }
+    if(strlen(jogada) != N_JOGADAS) return false;
     for(int i = 0; i < N_CORES; i++){
         checador = 0;
         for(int j = 0; j < N_JOGADAS; j++){
@@ -52,16 +50,11 @@ bool checaJogada(char jogada[], char cores[]){
             }
         }
         //Este if checa se o usuário digitou uma cor mais de uma vez
-        if(checador > 1){
-            return false;
-        }
+        if(checador > 1) return false;
         somador += checador; //Se estiver certo, checado será 0 ou 1, se der mais que 1 a função ja terá acabado
     }
-    if(somador == N_JOGADAS){
-        return true;
-    }else{
-        return false;
-    }
+    if(somador == N_JOGADAS) return true;
+    else return false;
 }
 
 /*
@@ -73,10 +66,11 @@ char * recebeJogada(char cores[]){
     while(true){
         printf("\Sua jogada: ");
         scanf("%s", &jogadaDoJogador);
-        strcat(jogadaCorrigida, strupr(jogadaDoJogador));
+        strcat(jogadaCorrigida, strupr(jogadaDoJogador)); //Atribui a jogada em letras maiúsculas em outra variável
         if(checaJogada(jogadaCorrigida, cores)){
             break;
-        }else{
+        }
+        else{
             linha();
             printf("Você fez uma jogada inválida\n");
             linha();
@@ -85,10 +79,12 @@ char * recebeJogada(char cores[]){
     return jogadaDoJogador;
 }
 
-void jogo(char cores[]){
+void mainJogo(char cores[]){
     int chances = CHANCES;
     char jogada[N_JOGADAS];
-    explicaJogo();
+    while(true){
+
+    }
 
 }
 int main(){
