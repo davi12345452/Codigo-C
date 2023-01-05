@@ -113,13 +113,13 @@ void recebeJogada(char jogada[],char tabela[][N_JOGADAS]){
         colocaEmMaiuscula(jogada);
         if(strcmp(jogada, "?") == 0){
             tabelaCores();
+            continue;
         }
         else if(strcmp(jogada, "!") == 0){
             tabelaJogadas(tabela);
+            continue;
         }
-        else if(strcmp(jogada, "#") == 0){
-            break;
-        }
+        else if(strcmp(jogada, "#") == 0) break;
         else if(checaJogada(jogada)){
             jogadaValida = true;
         }
@@ -127,22 +127,27 @@ void recebeJogada(char jogada[],char tabela[][N_JOGADAS]){
     }
 }
 
-int sorteiaIndex(){
-    int index;
-    srand(time(NULL));
-    index = rand() % 7;
-    return index;
-}
-
 void sorteia(char jogadaSorteada[]){
-    while(true){
-        for(int i = 0; i < N_JOGADAS; i++){
-            jogadaSorteada = SIMBOLS[sorteiaIndex()];
-        }
-        if(checaJogada(jogadaSorteada)) break;
-    }
-}
+    char coresSorteadas[4] = {'\0'}; ;
+    int numCoresSorteadas = 0;
+    srand(time(0));
+    do
+    {
+        numCoresSorteadas = 0;
+        for (int i = 0; i < 4; i++)
+        {
+            char cor = SIMBOLS[rand() % 7];
 
+            while(numCoresSorteadas > 0 && coresSorteadas[numCoresSorteadas - 1] == cor)
+            {
+                cor = SIMBOLS[rand() % 7];
+            }
+            coresSorteadas[numCoresSorteadas] = cor;
+            jogadaSorteada[i] = cor;
+            numCoresSorteadas++;
+        }
+    }while (checaJogada(coresSorteadas));
+}
 
 
 bool desejaContinuar(){
@@ -170,7 +175,7 @@ void gameMinor(char sorteado[], char tabela[][N_JOGADAS]){
 
 void gameMajor(){
     char tabela[N_MAX_PARTIDAS][N_JOGADAS];
-    char sorteado[N_JOGADAS];
+    char sorteado[N_JOGADAS] = {"\0"};
     for(int m = 0; m < N_MAX_PARTIDAS; m++){
         printf("\t\t JOGO DE NÚMERO %d", m);
         sorteia(sorteado);
