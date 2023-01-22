@@ -11,7 +11,7 @@ SI 1 2022/2
 
 
 /*
-    As duas funções a seguir foram retiradas da aula.
+    As duas funÃ§Ãµes a seguir foram retiradas da aula.
 */
 double fat(int n)
 {
@@ -35,7 +35,7 @@ double xnan(double x, int n)
 }
 
 /*
-    Função que calcula e^x
+    FunÃ§Ã£o que calcula e^x
 */
 
 double enax(double x)
@@ -54,7 +54,7 @@ double enax(double x)
 }
 
 /*
-    Função que calcula ln((x+1))
+    FunÃ§Ã£o que calcula ln((x+1))
 */
 double ln_xmais1(double x)
 {
@@ -83,7 +83,7 @@ double ln_xmais1(double x)
 }
 
 /*
-    Função fornecida pelo professor que calcula ln(x)
+    FunÃ§Ã£o fornecida pelo professor que calcula ln(x)
 */
 
 double ln(double x)
@@ -103,7 +103,7 @@ double ln(double x)
 }
 
 /*
-    Função que calcula x^y a partir de e^(y * ln(x))
+    FunÃ§Ã£o que calcula x^y a partir de e^(y * ln(x))
 */
 double xnay(double x, double y)
 {
@@ -114,7 +114,7 @@ double xnay(double x, double y)
 }
 
 /*
-    Função main fornecida pelo professor, somente incorporei os testes.
+    FunÃ§Ã£o main fornecida pelo professor, somente incorporei os testes.
 */
 int main(void)
 {
@@ -123,7 +123,7 @@ int main(void)
     double b = rc*rc*rc;
     printf("%lf deve ser parecido com %lf\n", a, b);
     /*
-        Teste das funções intermediárias enax, ln_xmais1 e xnay
+        Teste das funÃ§Ãµes intermediÃ¡rias enax, ln_xmais1 e xnay
     */
     printf("e^4 => %lf = %lf\n",exp(4), enax(4));
     printf("ln(1 + 0.3) => %lf = %lf\n",log(1.3), ln_xmais1(0.3));
