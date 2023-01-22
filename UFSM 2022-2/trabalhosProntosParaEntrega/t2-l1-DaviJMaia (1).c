@@ -10,8 +10,15 @@ SI 1 2022/2
 #include <locale.h>
 
 
+void apresentacao(){
+    //Interface explicativa do programa
+    printf("\t\tBem vindos ao programa\n");
+    printf("Este programa recebe de entrada uma quantidade de intervalos\n");
+    printf("e um tamannho, devolvendo o intervalo que possui menos n?meros primos\n");
+}
+
 /*
-    Fun??o retirada da aula, devolve true quando ? primo e false quando n?o ?.
+    Função retirada da aula, devolve true quando é primo e false quando não é.
 */
 bool primo(int x)
 {
@@ -23,9 +30,9 @@ bool primo(int x)
 }
 
 /*
-    Fun??o que recebe um valor inicial e um final de um intervalo,
-    devolvendo o numero de n?meros primos dentro deste. Fa?o uso da
-    fun??o antes declarada para identificar um n?mero primo.
+    Função que recebe um valor inicial e um final de um intervalo,
+    devolvendo o numero de números primos dentro deste. Faço uso da
+    função antes declarada para identificar um número primo.
 */
 
 int primoPorIntervalo(int intervalo_i, int intervalo_f){
@@ -40,18 +47,15 @@ int primoPorIntervalo(int intervalo_i, int intervalo_f){
 
 /// não implementou as funções pedidas
 int main(){
-    //Idioma portugu?s, entende os acentos e caracteres especiais
+    //Idioma português, entende os acentos e caracteres especiais
     setlocale(LC_ALL, "Portuguese");
 
-    //Declara??o das vari?veis
+    //Declaração das variáveis
     int intervalos, tamanho, i;
     int intervalo_i, intervalo_f;
     int saidaIntervInicial, saidaIntervFinal, saidaPrimos;
 
-    //Interface explicativa do programa
-    printf("\t\tBem vindos ao programa\n");
-    printf("Este programa recebe de entrada uma quantidade de intervalos\n");
-    printf("e um tamannho, devolvendo o intervalo que possui menos n?meros primos\n");
+    apresentacao();
 
     //Interface com comandos de entrada
     printf("\nDigite a quantidade de intervalos: ");
@@ -59,22 +63,23 @@ int main(){
     printf("Digite o tamanho dos intervalos: ");
     scanf("%d", &tamanho);
 
-    //Atribui??es de valores
+    //Atribuições de valores
     intervalo_i = 1;
     intervalo_f = tamanho;
-    saidaPrimos = tamanho + 1; //Valor grande para que o programa n?o d? bug.
+    saidaPrimos = tamanho + 1; //Valor grande para que o programa não dê bug.
 
 
     /*
-        Principal: dentro deste loop for, passamos por cada intervalo que
-        o usu?rio digitou. A quantidade de repeti??es ? a mesma que a quan-
-        tidade de intervalos. Caso dentro de um intervalo exista menos pri-
-        mos que no intervalo que at? o momento era o que tinha menos, o
-        programa atribui a este novo intervalo o n?mero de primo dele e,
-        o seu in?cio e fim do intervalo ?s vari?veis de sa?da. A cada loop
-        os intervalos recebem o valor tamanho para verificarem um novo
-        intervalo.
+    Principal: dentro deste loop for, passamos por cada intervalo que
+    o usuário digitou. A quantidade de repetições é a mesma que a quan-
+    tidade de intervalos. Caso dentro de um intervalo exista menos pri-
+    mos que no intervalo que até o momento era o que tinha menos, o
+    programa atribui a este novo intervalo o número de primo dele e,
+    o seu início e fim do intervalo às variáveis de saída. A cada loop
+    os intervalos recebem o valor tamanho para verificarem um novo
+    intervalo.
     */
+
     for(i = 1; i <= intervalos; i++){
         if(primoPorIntervalo(intervalo_i, intervalo_f) < saidaPrimos){
             saidaPrimos = primoPorIntervalo(intervalo_i, intervalo_f);
@@ -85,7 +90,7 @@ int main(){
         intervalo_f += tamanho;
     }
 
-    //Imprime as sa?da do programa.
+    //Imprime as saídas do programa.
     printf("\nIntervalo: %d ao %d\nN?mero de primos: %d\n", saidaIntervInicial, saidaIntervFinal, saidaPrimos);
 
     return 0;
