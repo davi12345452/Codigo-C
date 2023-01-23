@@ -29,31 +29,48 @@ bool primo(int x)
   return true;
 }
 
-/*
-    Função que recebe um valor inicial e um final de um intervalo,
-    devolvendo o numero de números primos dentro deste. Faço uso da
-    função antes declarada para identificar um número primo.
-*/
-
-int primoPorIntervalo(int intervalo_i, int intervalo_f){
-    int i, numPrimos = 0;
-    for(i = intervalo_i; i <= intervalo_f; i++){
-        if(primo(i)){
-            numPrimos += 1;
-        }
+// Função que conta o número de primos dado um inicio e fim de intervalo
+int conta_primos(int inicio, int fim){
+    int contador = 0;
+    for(int i = inicio; i <= fim; i++){
+        if(primo(i)) contador++;
     }
-    return numPrimos;
+    return contador;
 }
 
-/// não implementou as funções pedidas
+// Função que conta o número de primos por um intervalo
+int conta_primos_por_intervalo(int tamanho, int ordem){
+    int inicio = (ordem - 1) * tamanho + 1;
+    int fim = ordem * tamanho;
+    return conta_primos(inicio, fim);
+}
+
+// Função que imprime o número de primos por um dado intervalo
+void imprime_primos_intervalos(int tamanho, int num_intervalos) {
+    int qtd_primos = conta_primos_por_intervalo(tamanho, num_intervalos);
+    printf("Intervalo %d-%d: %d primos\n", (num_intervalos - 1) * tamanho + 1, num_intervalos * tamanho, qtd_primos);
+}
+
+// Função que devolve o intevalo com menor número de primos
+int intervalo_menor_numero_primos(int tamanho, int num_intervalos) {
+    int menor_num_primos = INT_MAX;
+    int intervalo_menor_num_primos = -1;
+    for (int i = 1; i <= num_intervalos; i++) {
+        int qtd_primos = conta_primos_por_intervalo(tamanho, i);
+        if (qtd_primos < menor_num_primos) {
+            menor_num_primos = qtd_primos;
+            intervalo_menor_num_primos = i - 1;
+        }
+    }
+    return intervalo_menor_num_primos;
+}
+
 int main(){
     //Idioma português, entende os acentos e caracteres especiais
     setlocale(LC_ALL, "Portuguese");
 
     //Declaração das variáveis
-    int intervalos, tamanho, i;
-    int intervalo_i, intervalo_f;
-    int saidaIntervInicial, saidaIntervFinal, saidaPrimos;
+    int intervalos, tamanho;
 
     apresentacao();
 
@@ -63,35 +80,8 @@ int main(){
     printf("Digite o tamanho dos intervalos: ");
     scanf("%d", &tamanho);
 
-    //Atribuições de valores
-    intervalo_i = 1;
-    intervalo_f = tamanho;
-    saidaPrimos = tamanho + 1; //Valor grande para que o programa não dê bug.
-
-
-    /*
-    Principal: dentro deste loop for, passamos por cada intervalo que
-    o usuário digitou. A quantidade de repetições é a mesma que a quan-
-    tidade de intervalos. Caso dentro de um intervalo exista menos pri-
-    mos que no intervalo que até o momento era o que tinha menos, o
-    programa atribui a este novo intervalo o número de primo dele e,
-    o seu início e fim do intervalo às variáveis de saída. A cada loop
-    os intervalos recebem o valor tamanho para verificarem um novo
-    intervalo.
-    */
-
-    for(i = 1; i <= intervalos; i++){
-        if(primoPorIntervalo(intervalo_i, intervalo_f) < saidaPrimos){
-            saidaPrimos = primoPorIntervalo(intervalo_i, intervalo_f);
-            saidaIntervInicial = intervalo_i;
-            saidaIntervFinal = intervalo_f;
-        }
-        intervalo_i += tamanho;
-        intervalo_f += tamanho;
-    }
-
-    //Imprime as saídas do programa.
-    printf("\nIntervalo: %d ao %d\nN?mero de primos: %d\n", saidaIntervInicial, saidaIntervFinal, saidaPrimos);
+    int intarvalorComMenosPrimos = intervalo_menor_numero_primos(tamanho, intervalos);
+    imprime_primos_intervalos(tamanho, intarvalorComMenosPrimos + 1);
 
     return 0;
 }
