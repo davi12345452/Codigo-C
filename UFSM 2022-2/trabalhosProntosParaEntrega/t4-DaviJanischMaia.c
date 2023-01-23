@@ -13,13 +13,9 @@
 /*
     Função que recebe um vetor e devolve o termo com maior valor
 */
-
-float encontraMaior(float vetor[]){
-    float maior = 0;
-/// a funcao nao tem como saber o tamanho do vetor recebido (so tem uma referencia),
-///   o operador sizeof vai dar o tamanho da referencia (4 ou 8 bytes).
-/// se funcionasse, o sizeof teria dado o tamanho do vetor em bytes, e nao em elementos.
-    for(int j = 0; j <= sizeof(vetor); j++){
+float encontraMaior(float vetor[], int tamanho){
+    float maior = vetor[0];
+    for(int j = 0; j < tamanho; j++){
         if(vetor[j] > maior){
             maior = vetor[j];
         }
@@ -31,10 +27,10 @@ float encontraMaior(float vetor[]){
     Função recebe dois vetores e devolve o termo com maior valor entre eles
 */
 
-float maiorEntreVetores(float vetor1[], float vetor2[]){
+float maiorEntreVetores(float vetor1[], int tamanho1, float vetor2[], int tamanho2){
     float maior1, maior2;
-    maior1 = encontraMaior(vetor1);
-    maior2 = encontraMaior(vetor2);
+    maior1 = encontraMaior(vetor1, tamanho1);
+    maior2 = encontraMaior(vetor2, tamanho2);
     if(maior1 > maior2){
         return maior1;
     }else {
@@ -77,9 +73,9 @@ void linhaDeX(float maior, float valor1, float valor2, int faixaIdade){
     }
 
     if(faixaIdade < 100){
-        printf("\n%+35s %3d %-35s", stringV1, faixaIdade, stringV2);
+        printf("\n%+35s%3d %-35s", stringV1, faixaIdade, stringV2);
     }else{
-        printf("\n%+35s %+3s %-35s", stringV1, "++", stringV2);
+        printf("\n%+35s%+3s %-35s", stringV1, "++", stringV2);
     }
 
 }
@@ -91,8 +87,8 @@ void linhaDeX(float maior, float valor1, float valor2, int faixaIdade){
     para gerar a pirâmide com a faixa de idade decrescendo.
 */
 
-void geraPiramide(float vetor1[], float vetor2[]){
-    int maior = maiorEntreVetores(vetor1, vetor2);
+void geraPiramide(float vetor1[], int tamanho1, float vetor2[], int tamanho2){
+    int maior = maiorEntreVetores(vetor1, tamanho1, vetor2, tamanho2);
     printf("\n%+30s%s\n", " ", "PIRÂMIDE ETÁRIA");
     for(int i = 1; i <= 21; i++){
         linhaDeX(maior, vetor1[21-i], vetor2[21-i], (105-(5*i)));
@@ -102,11 +98,13 @@ void geraPiramide(float vetor1[], float vetor2[]){
 
 int main(void){ //Função main, chama a função que gera pirâmide
     setlocale(LC_ALL, "portuguese");
+
     float ph1[21] = { 200, 190, 180, 170, 160, 150, 140, 129, 120, 110, 100, 90, 80, 70, 60, 50, 40, 30, 20, 10, 0 };
-    float pf1[21] = { 200, 190, 220, 170, 160, 150, 140, 129, 120, 40, 100, 90, 80, 70, 70, 50, 40, 30, 20, 10, 0 };
+    float pf1[21] = { 200, 190, 220, 170, 160, 150, 140, 129, 120, 40, 100, 90, 80, 70, 70, 50, 40, 30, 20, 10, 0};
     float ph2[21] = { 160, 170, 190, 210, 220, 240, 240, 230, 230, 220, 200, 190, 180, 140, 110, 90, 60, 40, 30, 10, 0 };
     float pf2[21] = { 170, 170, 200, 210, 220, 240, 240, 230, 230, 220, 200, 190, 180, 150, 120, 90, 70, 50, 30, 20, 10 };
-    geraPiramide(ph1, pf1);
-    geraPiramide(ph2, pf2);
+
+    geraPiramide(ph1, 21, pf1, 21);
+    geraPiramide(ph2, 21, pf2, 21);
     return 0;
 }
