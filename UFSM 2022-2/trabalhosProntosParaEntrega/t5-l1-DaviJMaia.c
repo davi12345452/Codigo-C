@@ -75,6 +75,8 @@ void elementoTabelaDeCores(char simbol, int vermelho, int verde, int azul){
     printf("%+35s\n", "|");
 }
 
+/* Essa função imprime a tabela de cores para o usuário*/
+
 void tabelaDeCores(){
     printf("--------------------------------------------\n");
     printf("%s%+30s%+13s\n", "|", "TABELA DE CORES", "|");
@@ -107,6 +109,7 @@ void imprimeLinhaCor(char string[], int preto, int branco, bool verificador){
     printf("\n");  
 }
 
+/* Essa função imprime as cores jogadas pelo usuário e seu resultado, os quadrados pretos e brancos*/
 void imprimeResulatadoCores(char string[], int preto, int branco){
     printf("\n");
     imprimeLinhaCor(string, preto, branco, false);
@@ -136,13 +139,15 @@ void apresentacao(){
 }
 
 void despedida(){
-
+    printf("\nQue pena, espero que tenha se divertido, ate!\n");
 }
 
 /*
     Demais funções do programa, com a lógica do jogo.
 */
 
+/* Essa função é feita para receber uma jogada, ja descartado as entradas 
+   de caracteres especiais, devolvendo true se é válida e false se não.*/
 bool verificaJogada(char jogadaJogador[]){
     int somador = 0, checador;
     if(strlen(jogadaJogador) != 4) return false;
@@ -159,6 +164,10 @@ bool verificaJogada(char jogadaJogador[]){
     if(somador == 4) return true;
 }
 
+/* Essa função retorna 0 caso queira sair, 1 para imprimir
+   tabela de cores, 2 para ver as jogas, 3 se é válida e 
+   4 se for uma jogada inválida. Esses número serão usados
+   na função partid.*/
 int retornaSituacaoJogada(char jogadaJogador[]){
     if(strncmp(jogadaJogador, "#", 1) == 0) return 0;
     else if(strncmp(jogadaJogador, "?", 1) == 0) return 1;
@@ -167,7 +176,7 @@ int retornaSituacaoJogada(char jogadaJogador[]){
     else return 4;
 }
 
-
+/* Devolve os acertos de quadrado preto*/
 int verificaAcertosPreto(char jogadaJogador[], char jogadaSorteada[]){
     int acertosPreto = 0;
     for(int i = 0; i < 4; i++){
@@ -178,6 +187,7 @@ int verificaAcertosPreto(char jogadaJogador[], char jogadaSorteada[]){
     return acertosPreto;
 }
 
+/* Devolve os acertos do quadrado branco*/
 int verificaAcertosBrancos(char jogadaJogador[], char jogadaSorteada[]){
     int brancos = 0;
     int pretos = verificaAcertosPreto(jogadaJogador, jogadaSorteada);
@@ -189,6 +199,7 @@ int verificaAcertosBrancos(char jogadaJogador[], char jogadaSorteada[]){
     return brancos - pretos;
 }
 
+/* Imprime as jogadas do usuário na partida*/
 void imprimeRelatorio(char jogadas[NUM_CHANCES][NUM_STRING]){
     printf("--------------------------------------------\n");
     printf("%s%+30s%+13s\n", "|", "RELATORIO JOGADAS", "|");
@@ -199,6 +210,7 @@ void imprimeRelatorio(char jogadas[NUM_CHANCES][NUM_STRING]){
     printf("--------------------------------------------\n");
 }
 
+/* Função que le a jogada e a transforma totalmente em maiúscula*/
 void recebeJogada(char jogadaJogador[]){
     printf("\nDigite a sua jogada: ");
     scanf("%s", jogadaJogador);
@@ -236,6 +248,7 @@ void sorteiaJogada(char jogadaSorteada[]){
     jogadaSorteada[4] = '\0';
 }
 
+/* Função que cria uma partida, usando as funções anteriores*/
 void partida(){
     char jogadaJogador[5]; 
     char jogadaSorteada[5];
@@ -261,6 +274,7 @@ void partida(){
     }while(cont < NUM_CHANCES);
 }
 
+/* Coloca a partida em um loop infinito, o usuário pode jogar quanto quiser*/
 void jogo(){
     int decisao;
     apresentacao();
