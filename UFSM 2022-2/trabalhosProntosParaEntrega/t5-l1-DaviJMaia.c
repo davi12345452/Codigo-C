@@ -9,6 +9,7 @@ T5 - L1
 #include <time.h>
 #include <locale.h>
 #include <string.h>
+#include <ctype.h>
 
 #define NUM_STRING 5
 #define NUM_CHANCES 9
@@ -144,6 +145,7 @@ void despedida(){
 
 bool verificaJogada(char jogadaJogador[]){
     int somador = 0, checador;
+    if(strlen(jogadaJogador) != 4) return false;
     for(int i = 0; i < NUM_CORES; i++){
         checador = 0;
         for(int j = 0; j < 4; j++){
@@ -158,21 +160,33 @@ bool verificaJogada(char jogadaJogador[]){
 }
 
 int retornaSituacaoJogada(char jogadaJogador[]){
-    if(jogadaJogador == "#") return 0;
-    else if(jogadaJogador == "?") return 1;
-    else if(jogadaJogador == "!") return 2;
-    
+    if(strncmp(jogadaJogador, "#", 1) == 0) return 0;
+    else if(strncmp(jogadaJogador, "?", 1) == 0) return 1;
+    else if(strncmp(jogadaJogador, "!", 1) == 0) return 2;
     else if(verificaJogada(jogadaJogador)) return 3;
     else return 4;
 }
 
-void fazJogada(){}
-int verificaAcertosPreto(char jogadaJogador[], char jogadaSorteada[]){
 
+int verificaAcertosPreto(char jogadaJogador[], char jogadaSorteada[]){
+    int acertosPreto = 0;
+    for(int i = 0; i < 4; i++){
+        if(jogadaJogador[i] == jogadaSorteada[i]){
+            acertosPreto++;
+        }
+    }
+    return acertosPreto;
 }
 
 int verificaAcertosBrancos(char jogadaJogador[], char jogadaSorteada[]){
-
+    int brancos = 0;
+    int pretos = verificaAcertosPreto(jogadaJogador, jogadaSorteada);
+    for(int i = 0; i < 4; i++){
+        for(int j = 0; j < 4; j++){
+            if(jogadaJogador[i] == jogadaSorteada[j]) brancos++;
+        }
+    }
+    return brancos - pretos;
 }
 
 void imprimeRelatorio(char jogadas[NUM_CHANCES][NUM_STRING]){
@@ -186,16 +200,81 @@ void imprimeRelatorio(char jogadas[NUM_CHANCES][NUM_STRING]){
 }
 
 void recebeJogada(char jogadaJogador[]){
-    printf("Digite a sua jogada: ");
-    scanf("%s", &jogadaJogador);
+    printf("\nDigite a sua jogada: ");
+    scanf("%s", jogadaJogador);
+
+    for(int i = 0; i < 4; i++){
+        jogadaJogador[i] = toupper(jogadaJogador[i]);
+    }
 }
 
-void partida(){}
-void jogo(){}
+/* As próximas duas funcoes fazem o sorteio de uma jogada.
+   A funcao bool verifica se a letra já foi sorteada ou nao,
+   permitindo a funcao void, principal, entrar em um loop ate
+   que ache um simbolo valido para a jogada.*/
+
+bool letraRepetida(char letra, char jogadaSorteada[], int i){
+    for(int j = 0; j < i; j++){
+        if(letra == jogadaSorteada[j]){
+            return true;
+        }
+    }
+    return false;
+}
+
+void sorteiaJogada(char jogadaSorteada[]){
+    char letraSorteada;
+    srand(time(0));
+
+    for(int i = 0; i < 4; i++){
+        letraSorteada = SIMBOLOS[rand()%7];
+        while(letraRepetida(letraSorteada, jogadaSorteada, i)){
+            letraSorteada = SIMBOLOS[rand()%7];
+        }
+        jogadaSorteada[i] = letraSorteada;
+    }
+    jogadaSorteada[4] = '\0';
+}
+
+void partida(){
+    char jogadaJogador[5]; 
+    char jogadaSorteada[5];
+    int cont = 0;
+    char tabela[NUM_CHANCES][NUM_STRING];
+    sorteiaJogada(jogadaSorteada);
+    do{
+        recebeJogada(jogadaJogador);
+        if(retornaSituacaoJogada(jogadaJogador) == 0) break;
+        else if(retornaSituacaoJogada(jogadaJogador) == 1) tabelaDeCores();
+        else if(retornaSituacaoJogada(jogadaJogador) == 2) imprimeRelatorio(tabela);
+        else if(retornaSituacaoJogada(jogadaJogador) == 4) printf("Jogada Invalida.");
+        else{
+            strcpy(tabela[cont], jogadaJogador);
+            cont++;
+            imprimeResulatadoCores(jogadaJogador, verificaAcertosPreto(jogadaJogador, jogadaSorteada), verificaAcertosBrancos(jogadaJogador, jogadaSorteada));
+            if(strcmp(jogadaJogador, jogadaSorteada) == 0){
+                printf("Parabéns, voce venceu na rodada %d", cont);
+                break;
+            }
+        }
+    }while(cont < NUM_CHANCES);
+}
+
+void jogo(){
+    int decisao;
+    apresentacao();
+    while(true){
+        partida();
+        printf("\nVoce deseja jogar mais uma partida? [Sim: 1/Nao: 0] ");
+        scanf("%d", &decisao);
+        if(decisao == 0) break;
+    }
+    despedida();
+}
 
 
 int main(){
     setlocale(LC_ALL, "portuguese");
-    printf("%d", retornaSituacaoJogada("VART"));
+    jogo();
     return 0;
 }
