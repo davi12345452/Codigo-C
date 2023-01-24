@@ -241,6 +241,7 @@ void partida(){
     char jogadaSorteada[5];
     int cont = 0;
     char tabela[NUM_CHANCES][NUM_STRING];
+    memset(tabela, '\0', sizeof(tabela));
     sorteiaJogada(jogadaSorteada);
     do{
         recebeJogada(jogadaJogador);
@@ -253,7 +254,7 @@ void partida(){
             cont++;
             imprimeResulatadoCores(jogadaJogador, verificaAcertosPreto(jogadaJogador, jogadaSorteada), verificaAcertosBrancos(jogadaJogador, jogadaSorteada));
             if(strcmp(jogadaJogador, jogadaSorteada) == 0){
-                printf("Parabéns, voce venceu na rodada %d", cont);
+                printf("Parabens, voce venceu na rodada %d", cont);
                 break;
             }
         }
