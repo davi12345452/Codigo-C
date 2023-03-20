@@ -51,7 +51,7 @@ void calcula_medias(int n, aluno_t alunos[n]) {
 
 int main() {
     char *nome_do_arquivo = "notas.txt";
-    int n = 3;
+    int n = 15;
     aluno_t alunos[n];
 
     int num_alunos = le_arq(n, alunos, nome_do_arquivo);
