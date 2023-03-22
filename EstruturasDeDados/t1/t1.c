@@ -2,6 +2,7 @@
 
 typedef struct {
     int matricula;
+    char nome[30];
     float nota1;
     float nota2;
     float media;
@@ -23,7 +24,7 @@ int le_arq(aluno_t **alunos, char *nome_do_arquivo) {
     }
 
     for (int i = 0; i < num_alunos; i++) {
-        fscanf(file, "%d %f %f", &(*alunos)[i].matricula, &(*alunos)[i].nota1, &(*alunos)[i].nota2);
+        fscanf(file, "%d %s %f %f", &(*alunos)[i].matricula, &(*alunos)[i].nome, &(*alunos)[i].nota1, &(*alunos)[i].nota2);
         (*alunos)[i].media = ((*alunos)[i].nota1 + (*alunos)[i].nota2) / 2;
     }
 
@@ -39,7 +40,7 @@ void grava_arq(int n, aluno_t alunos[n], char *nome_do_arquivo) {
 
     fprintf(file, "%d\n", n);
     for (int i = 0; i < n; i++) {
-        fprintf(file, "%d %.1f %.1f %.1f\n", alunos[i].matricula, alunos[i].nota1, alunos[i].nota2, alunos[i].media);
+        fprintf(file, "%d %s %.1f %.1f %.1f\n", alunos[i].matricula, alunos[i].nome, alunos[i].nota1, alunos[i].nota2, alunos[i].media);
     }
 
     fclose(file);
