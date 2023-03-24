@@ -15,10 +15,11 @@ int le_arq(int n, aluno_t alunos[n], char *nome_do_arquivo) {
     }
 
     int num_alunos;
-    fscanf(file, "%d", &num_alunos);
+    //fscanf retorna a quantidade de conversões, no caso 1
+    //resolver a questão abaixo
+    if(fscanf(file, "%d", &num_alunos)!= 1){
 
-    printf("%d", num_alunos);
-
+    };
     if(n < num_alunos) return -1;
 
     for(int i = 0; i < num_alunos; i++){

@@ -8,7 +8,7 @@ typedef struct {
     float media;
 } aluno_t;
 
-int le_arq(aluno_t **alunos, char *nome_do_arquivo) {
+int le_arq(int n, aluno_t alunos[n], char *nome_do_arquivo) {
     FILE *file = fopen(nome_do_arquivo, "r");
     if (!file) {
         return -1;
@@ -48,7 +48,7 @@ void grava_arq(int n, aluno_t alunos[n], char *nome_do_arquivo) {
 
 int main() {
     char *nome_do_arquivo = "notas.txt";
-    aluno_t *alunos;
+    aluno_t alunos[30];
 
     int num_alunos = le_arq(&alunos, nome_do_arquivo);
     if (num_alunos == -1) {
