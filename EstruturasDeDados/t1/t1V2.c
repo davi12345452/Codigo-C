@@ -77,6 +77,7 @@ int main() {
     }
 
     calcula_medias(n, alunos);
+    // Não precisa passar &aluno pois não há modificação do ponteiro
     grava_arq(n, alunos, nome_do_arquivo);
 
     // Aqui estou liberando a alocação de memória dos nomes
