@@ -35,7 +35,6 @@ void ler_float(char *mensagem, float *valor) {
     scanf("%f", valor);
 }
 
-
 // Essa função serve para ler um caractere e, verificar se ele é aos
 // 2 possíveis. Além disso, a função deixa esses caracteres salvos
 // maiúsculos.
@@ -62,13 +61,28 @@ void ler_string(char *mensagem, char *str) {
 
 //Função que recebe os dados de entrada das pessoas
 void recebeDadosEntrada(int tamanhoV, Pessoa vetor[tamanhoV]){
-
+    printf("\tCadastro de pessoas.\n");
+    for(int i = 0; i < tamanhoV; i++){
+        printf("\n\tCadastro pessoa %d:", i);
+        ler_int("\nDigite o código: ", &vetor[i].codigo);
+        ler_string("Digite o nome: ", vetor[i].nome);
+        ler_string("Digite o endereço: ", vetor[i].endereco);
+        ler_float("Digite o peso(kg): ", &vetor[i].peso);
+        ler_int("Digite a altura(cm): ", &vetor[i].altura);
+        ler_char("Digite o sexo: ", &vetor[i].sexo, "F", "M");
+        ler_float("Digite o salário: ", &vetor[i].salario);
+    }
 }
 
 int main(){
     //Variável para definir a quantidade de pessoas a serem computadas
-    int tamanhoVetor = 0;
+    int tamanhoVetor = 2;
     Pessoa *vetorPessoas[tamanhoVetor];
+
+    //Deixando a linguagem em português, para aceitar acentos e caracteres especiais
+    setlocale(LC_ALL, "portuguese");
+
+    recebeDadosEntrada(tamanhoVetor, &vetorPessoas);
 
     return 0;
 }
