@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 
 typedef struct {
     int matricula;
@@ -9,6 +10,13 @@ typedef struct {
     float nota2;
     float media;
 } aluno_t;
+
+char *lerStringEntreAspas(FILE *arq){
+    while(true){
+        // Vai precisar encontrar a primeira aspa e, a partir dela
+        // salvar caractere por caractere, até achar a última aspa
+    }
+}
 
 int le_arq(aluno_t **alunos, char *nome_do_arquivo) {
     int num_alunos;
@@ -22,6 +30,13 @@ int le_arq(aluno_t **alunos, char *nome_do_arquivo) {
     }
 
     *alunos = (aluno_t *) malloc(num_alunos * sizeof(aluno_t));
+
+    /*
+        Preciso mudar a lógica da string, precisa estar entre "" no arquvio txt, logo,
+        preciso criar uma função especial para identificar a primeira aspa e a partir
+        dela gravar os caracteres da string, ou seja, ela vai gravar até achar a outra
+        aspa, ou quando atingir o espaço, 30.
+    */
 
     for(int i = 0; i < num_alunos; i++){
         char temp_nome[30];
