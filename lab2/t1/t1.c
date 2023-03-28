@@ -2,6 +2,7 @@
 // Lab2 - Trabalho 1
 
 #include <stdio.h>
+#include <limits.h>
 #include <string.h>
 #include <stdlib.h>
 #include <locale.h>
@@ -20,6 +21,7 @@ float salario;
 };
 
 typedef struct pessoa Pessoa;
+
 
 // Função que lê um inteiro e salva em um local da memória
 void ler_int(char *mensagem, int *valor) {
@@ -83,6 +85,17 @@ void ler_string(char *mensagem, char *str) {
     }
 }
 
+void imprimeLinha(char c, int vezes){
+    printf("\n");
+    for(int i = 0; i < vezes; i++){
+        printf("%c", c);
+    }
+}
+void imprimeHeaderRelatorio(char *frase){
+    imprimeLinha('-', 50);
+    printf("\n|  %-46s|\n", frase);
+    imprimeLinha('-', 50);
+}
 //Função que recebe os dados de entrada das pessoas
 void recebeDadosEntrada(int tamanhoV, Pessoa vetor[tamanhoV]){
     printf("***************************************");
@@ -125,38 +138,212 @@ void mostraDados(int tamanhoV, Pessoa pessoas[tamanhoV]){
     }
     printf("--------------------------------------------------\n");
 };
-//void mediaPesoMulheres(){};
-//void salarioHomens(){};
+
+void mediaSalariosHomens(int tamanhoV, Pessoa pessoas[tamanhoV]){
+    float somaSalario = 0, mediaSalarial;
+    int quantHomens = 0;
+
+    for(int i = 0; i < tamanhoV; i++){
+        if(pessoas[i].sexo == 'M'){
+            somaSalario+= pessoas[i].salario;
+            quantHomens+= 1;
+        }
+    }
+    mediaSalarial = somaSalario / (float) quantHomens;
+    imprimeHeaderRelatorio("Relatório Salarial Homens:");
+    printf("\n| Media salarial: %.2f", mediaSalarial);
+    imprimeLinha('-', 50);
+
+};
+
+float mediaPesosMulheres(int tamanhoV, Pessoa pessoas[tamanhoV]){
+    float somaPeso = 0, mediaPeso;
+    int quantMulheres = 0;
+
+    for(int i = 0; i < tamanhoV; i++){
+        if(pessoas[i].sexo == 'F'){
+            somaPeso += pessoas[i].peso;
+            quantMulheres += 1;
+        }
+    }
+    mediaPeso = somaPeso / (float) quantMulheres;
+    return mediaPeso;
+};
+
+void relatorioMediaPesoMulheres(float mediaPeso){
+    imprimeHeaderRelatorio("Relatório Peso Mulheres:");
+    printf("\n| Media de peso: %.2f", mediaPeso);
+    imprimeLinha('-', 50);
+}
+
 void mostrarIMC(int tamanhoV, Pessoa pessoas[tamanhoV]){
     float imc, peso, altura;
-    printf("\n----------------------\n");
-    printf("|   Relatório IMCs   |\n");
-    printf("----------------------\n");
+    imprimeHeaderRelatorio("Relatório IMCs das pessoas:");
     for(int i = 0; i < tamanhoV; i++){
        altura = (float) pessoas[i].altura *0.01;
        peso = pessoas[i].peso;
        imc = peso/(altura * altura);
-       printf("| IMC Pessoa %d: %-2.2f |\n", i, imc);
+       printf("| IMC Pessoa %-2d: %-2.2f \n", i+1, imc);
     }
-    printf("----------------------\n");
+    imprimeLinha('-', 50);
 };
-//void pessoaMaisAlta(){};
-//void codigoMaisBaixa(){};
-//void numPesSalarioAcimaMedia(){};
+
+void pessoaMaisAlta(int tamanhoV, Pessoa pessoas[tamanhoV]){
+    char nomePessoaMaisAlta[T_STRING];
+    int maiorAltura = INT_MIN;
+    for(int i = 0; i < tamanhoV; i++){
+        if(pessoas[i].altura > maiorAltura){
+            maiorAltura = pessoas[i].altura;
+            for(int j = 0; j < T_STRING; j++){
+                nomePessoaMaisAlta[j] = pessoas[i].nome[j];
+            }
+        }
+    }
+
+    imprimeHeaderRelatorio("Relatório Pessoa mais Alta:");
+    printf("\n| Nome pessoa mais alta: %s", nomePessoaMaisAlta);
+    imprimeLinha('-', 50);
+};
+
+void pessoaMaisBaixa(int tamanhoV, Pessoa pessoas[tamanhoV]){
+    int alturaMaisBaixa = INT_MAX, codigo;
+    for(int i = 0; i < tamanhoV; i++){
+        if(pessoas[i].altura < alturaMaisBaixa){
+            alturaMaisBaixa = pessoas[i].altura;
+            codigo = pessoas[i].codigo;
+        }
+    }
+
+    imprimeHeaderRelatorio("Relatório Pessoa mais Baixa:");
+    printf("\n| Código pessoa mais baixa: %d", codigo);
+    imprimeLinha('-', 50);
+};
+
+
+void numPesSalarioAcimaMedia(int tamanhoV, Pessoa pessoas[tamanhoV]){
+    float soma = 0, media;
+    int quantAcimaMedia = 0;
+    for(int i = 0; i < tamanhoV; i++){
+        soma += pessoas[i].salario;
+    }
+    media = soma / (float)tamanhoV;
+    for(int j = 0; j < tamanhoV; j++){
+        if(pessoas[j].salario > media){
+            quantAcimaMedia += 1;
+        }
+    }
+    imprimeHeaderRelatorio("Relatório Salário acima da Média:");
+    printf("\n| Quantidade de pessoas: %d", quantAcimaMedia);
+    imprimeLinha('-', 50);
+};
+
+
+void mulheresAbaixoDaMediaPeso(float mediaPeso, int tamanhoV, Pessoa pessoas[tamanhoV]){
+    int quant = 0;
+    for(int i = 0; i < tamanhoV; i++){
+        if(pessoas[i].sexo == 'F' && pessoas[i].peso < mediaPeso){
+            quant += 1;
+        }
+    }
+    imprimeHeaderRelatorio("Relatório Mulheres abaixo da Média de peso:");
+    printf("\n| Quantidade de mulheres abaixo da média: %d", quant);
+    imprimeLinha('-', 50);
+}
+
+void menosDeMilSalario(int tamanhoV, Pessoa pessoas[tamanhoV]){
+    imprimeHeaderRelatorio("Relatório pessoas com salário < 1000:");
+    for(int i = 0; i < tamanhoV; i++){
+        if(pessoas[i].salario < 1000){
+            printf("\n| Pessoa cadastrada número %d: ", i+1);
+            printf("\n| Nome: %s", pessoas[i].nome);
+            printf("\n| Endereço: %s", pessoas[i].endereco);
+            imprimeLinha('-', 50);
+        }
+
+    }
+
+}
+
+void explicacaoMenu(){
+    printf("\nSelecione o relatório desejado:\n");
+    printf("1. Mostrar Dados\n");
+    printf("2. Pessoa Mais Alta\n");
+    printf("3. Pessoa Mais Baixa\n");
+    printf("4. Mulheres Abaixo da Média de Peso\n");
+    printf("5. Mostrar IMC\n");
+    printf("6. Pessoas com Salário < R$ 1000\n");
+    printf("7. Pessoas com Salário Acima da Média\n");
+    printf("8. Média de Salários dos Homens\n");
+    printf("9. Média de Peso das Mulheres\n");
+    printf("0. Sair\n");
+    printf("Opção: ");
+
+}
+
+void menuRelatorios(int tamanhoV, Pessoa pessoas[tamanhoV]){
+    int opcao;
+    char continuar;
+    float mediaPeso = mediaPesosMulheres(tamanhoV, pessoas);
+
+    do {
+        explicacaoMenu();
+        scanf("%d", &opcao);
+
+        switch (opcao) {
+            case 1:
+                mostraDados(tamanhoVetor, vetorPessoas);
+                break;
+            case 2:
+                relatorioPessoaMaisAlta(pessoaMaisAlta(tamanhoVetor, vetorPessoas));
+                break;
+            case 3:
+                relatorioPessoaMaisBaixa(pessoaMaisBaixa(tamanhoVetor, vetorPessoas));
+                break;
+            case 4:
+                relatorioMulheresAbaixoDaMediaPeso(mulheresAbaixoDaMediaPeso(mediaPeso, tamanhoVetor, vetorPessoas));
+                break;
+            case 5:
+                mostrarIMC(tamanhoVetor, vetorPessoas);
+                break;
+            case 6:
+                menosDeMilSalario(tamanhoVetor, vetorPessoas);
+                break;
+            case 7:
+                relatorioPesSalarioAcimaMedia(numPesSalarioAcimaMedia(tamanhoVetor, vetorPessoas));
+                break;
+            case 8:
+                relatorioMediaSalariosHomens(mediaSalariosHomens(tamanhoVetor, vetorPessoas));
+                break;
+            case 9:
+                relatorioMediaPesoMulheres(mediaPesosMulheres(tamanhoVetor, vetorPessoas));
+                break;
+            case 0:
+                printf("Saindo...\n");
+                break;
+            default:
+                printf("Opção inválida.\n");
+                break;
+        }
+
+        if (opcao != 0) {
+            ler_char("\nDeseja continuar? (S/N): ", &continuar, 'S', 'N');
+        }
+    } while (opcao != 0 && continuar == 'S');
+}
+
 
 
 
 int main(){
     //Variável para definir a quantidade de pessoas a serem computadas
-    int tamanhoVetor = 1;
+    int tamanhoVetor = 4;
     Pessoa *vetorPessoas[tamanhoVetor];
 
     //Deixando a linguagem em português, para aceitar acentos e caracteres especiais
     setlocale(LC_ALL, "portuguese");
 
     recebeDadosEntrada(tamanhoVetor, &vetorPessoas);
-    //mostraDados(tamanhoVetor, vetorPessoas);
-    mostrarIMC(tamanhoVetor, vetorPessoas);
+    menuRelatorios(tamanhoVetor, vetorPessoas);
 
     return 0;
 }
