@@ -83,6 +83,8 @@ void ler_string(char *mensagem, char *str) {
 
 }
 
+
+// Função que gera uma linha com tamanho vezes e formada pelo caracter c
 void imprimeLinha(char c, int vezes){
     printf("\n");
     for(int i = 0; i < vezes; i++){
@@ -90,6 +92,7 @@ void imprimeLinha(char c, int vezes){
     }
 }
 
+// Função que imprime um header para um relatório, o usuário só passa a frase desejada
 void imprimeHeaderRelatorio(char *frase){
     imprimeLinha('-', 50);
     printf("\n|  %-46s|", frase);
@@ -99,13 +102,13 @@ void imprimeHeaderRelatorio(char *frase){
 
 //Função que recebe os dados de entrada das pessoas
 void recebeDadosEntrada(int tamanhoV, Pessoa vetor[tamanhoV]){
-    printf("***************************************");
+    imprimeLinha('*', 40);
     printf("\n\tCADASTRO DE PESSOAS\n");
-    printf("Obs.: Use ',' ao invés de '.' para nú-\nmeros com ponto flutuante(float)!\n");
+    printf("Obs.: Use ',' ao invés de '.' para nú-\nmeros com ponto flutuante(float)!");
     for(int i = 0; i < tamanhoV; i++){
-        printf("---------------------------------------");
-        printf("\n\tCadastro da pessoa %d:\n", i+1);
-        printf("---------------------------------------");
+        imprimeLinha('-', 40);
+        printf("\n\tCadastro da pessoa %d:", i+1);
+        imprimeLinha('-', 40);
         ler_int("\nDigite o código: ", &vetor[i].codigo);
         ler_string("Digite o nome: ", vetor[i].nome);
         ler_string("Digite o endereço: ", vetor[i].endereco);
@@ -114,25 +117,24 @@ void recebeDadosEntrada(int tamanhoV, Pessoa vetor[tamanhoV]){
         ler_char("Digite o sexo(F/M): ", &vetor[i].sexo, 'f', 'm');
         ler_float("Digite o salário(R$/mês): ", &vetor[i].salario);
     }
-    printf("---------------------------------------\n");
+    imprimeLinha('-', 40);
 }
 
 void mostraDados(int tamanhoV, Pessoa pessoas[tamanhoV]){
-    printf("\n**************************************************");
-    printf("\n*         DADOS DE PESSOAS CADASTRADAS           *\n");
+    imprimeHeaderRelatorio("       DADOS DE PESSOAS CADASTRADAS");
     for (int i = 0; i < tamanhoV; i++) {
-        printf("--------------------------------------------------\n");
-        printf("|              Pessoa número %-2d                  |\n", i + 1);
-        printf("--------------------------------------------------\n");
-        printf("| Código:     %-34d |\n", pessoas[i].codigo);
-        printf("| Nome:       %-34s |\n", pessoas[i].nome);
-        printf("| Endereço:   %-34s |\n", pessoas[i].endereco);
-        printf("| Peso(kg):   %-34.2f |\n", pessoas[i].peso);
-        printf("| Altura(cm): %-34d |\n", pessoas[i].altura);
-        printf("| Sexo:       %-34c |\n", pessoas[i].sexo);
-        printf("| Salário:    R$%-32.2f |\n", pessoas[i].salario);
+        printf("\n|              Pessoa número %-2d                  |", i + 1);
+        imprimeLinha('-', 50);
+        printf("\n| Código:     %-d \n", pessoas[i].codigo);
+        printf("| Nome:       %-s \n", pessoas[i].nome);
+        printf("| Endereço:   %-s \n", pessoas[i].endereco);
+        printf("| Peso(kg):   %-.2f \n", pessoas[i].peso);
+        printf("| Altura(cm): %-d \n", pessoas[i].altura);
+        printf("| Sexo:       %-c \n", pessoas[i].sexo);
+        printf("| Salário:    R$%-.2f ", pessoas[i].salario);
+        imprimeLinha('-', 50);
     }
-    printf("--------------------------------------------------\n");
+
 };
 
 void mediaSalariosHomens(int tamanhoV, Pessoa pessoas[tamanhoV]){
