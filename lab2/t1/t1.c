@@ -272,6 +272,7 @@ void mulheresAbaixoDaMediaPeso(float mediaPeso, int tamanhoV, Pessoa pessoas[tam
 // 1000 reais de salário. Devolve-se o número de cadastro, nome e endereço.
 
 void menosDeMilSalario(int tamanhoV, Pessoa pessoas[tamanhoV]){
+    int verificador = 0;// Verificador para mensagem caso não ache ninguém
     imprimeHeaderRelatorio("Relatório pessoas com salário < 1000:");
     for(int i = 0; i < tamanhoV; i++){
         if(pessoas[i].salario < 1000){
@@ -279,13 +280,13 @@ void menosDeMilSalario(int tamanhoV, Pessoa pessoas[tamanhoV]){
             printf("\n| Nome: %s", pessoas[i].nome);
             printf("\n| Endereço: %s", pessoas[i].endereco);
             imprimeLinha('-', 50);
-        }else{
-            printf("\n| Nenhuma pessoa encontrada!");
-            imprimeLinha('-', 50);
+            verificador++;
         }
-
     }
-
+    if(verificador == 0){
+    printf("\n| Nenhuma pessoa encontrada!");
+    imprimeLinha('-', 50);
+    }
 }
 
 // Função de exibição das opções para o menu de relatórios.
@@ -370,12 +371,12 @@ int main(){
     setlocale(LC_ALL, "portuguese");
 
     // DEFINA AQUI A QUANTIDADE DE PESSOAS A SEREM CADASTRADAS:
-    int tamanhoVetor = 1;
+    int tamanhoVetor = 10;
 
-    Pessoa *vetorPessoas[tamanhoVetor];
+    Pessoa vetorPessoas[tamanhoVetor];
 
     // DADOS DE ENTRADA:
-    recebeDadosEntrada(tamanhoVetor, &vetorPessoas);
+    recebeDadosEntrada(tamanhoVetor, vetorPessoas);
 
     // DADOS DE SAÍDA:
     menuRelatorios(tamanhoVetor, vetorPessoas);
