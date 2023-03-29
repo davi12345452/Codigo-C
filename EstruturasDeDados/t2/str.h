@@ -10,6 +10,7 @@
 #define _STR_H_
 
 #include <stdbool.h>
+#include <stdio.h>
 
 // o tipo de dados opaco (Str é um ponteiro para uma struct desconhecida chamada _str)
 typedef struct _str *Str;
@@ -30,7 +31,7 @@ Str str_cria_linha(FILE *arq);
 // libera os recursos (memória) ocupados pela string
 void str_destroi(Str s);
 
-// 
+//
 
 // retorna o número de caracteres na string (equivalente a strlen)
 int str_tam(Str s);
