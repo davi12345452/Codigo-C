@@ -69,20 +69,18 @@ void ler_char(char *mensagem, char *valor, char caract1, char caract2) {
 
 
 void ler_string(char *mensagem, char *str) {
-    printf("%s", mensagem);
-    getchar(); // Limpar buffer do teclado
-    fgets(str, T_STRING, stdin);
 
+    printf("%s", mensagem);
+    getchar();
+    fgets(str + 1, T_STRING - 1, stdin);
     // Remover o caractere de nova linha no final da string
     /*
         Ao usar o fgets, caso haja espaço para mais caracteres e se clicar enter para enviar
         ele vai colocar o \n dentro da string. Precisei tirar para ajudar na formatação do re-
         latório.
     */
-    int len = strlen(str);
-    if (len > 0 && str[len - 1] == '\n') {
-        str[len - 1] = '\0';
-    }
+    str[strcspn(str, "\n")] = '\0';
+
 }
 
 void imprimeLinha(char c, int vezes){
@@ -91,11 +89,14 @@ void imprimeLinha(char c, int vezes){
         printf("%c", c);
     }
 }
+
 void imprimeHeaderRelatorio(char *frase){
     imprimeLinha('-', 50);
-    printf("\n|  %-46s|\n", frase);
+    printf("\n|  %-46s|", frase);
     imprimeLinha('-', 50);
 }
+
+
 //Função que recebe os dados de entrada das pessoas
 void recebeDadosEntrada(int tamanhoV, Pessoa vetor[tamanhoV]){
     printf("***************************************");
@@ -116,11 +117,6 @@ void recebeDadosEntrada(int tamanhoV, Pessoa vetor[tamanhoV]){
     printf("---------------------------------------\n");
 }
 
-/*
-    Vou criar duas funções para cada relatório, uma que devolva os valores
-    como na media de peso das mulheres, outra para gerar o relatório para o
-    usuário.
-*/
 void mostraDados(int tamanhoV, Pessoa pessoas[tamanhoV]){
     printf("\n**************************************************");
     printf("\n*         DADOS DE PESSOAS CADASTRADAS           *\n");
@@ -140,7 +136,7 @@ void mostraDados(int tamanhoV, Pessoa pessoas[tamanhoV]){
 };
 
 void mediaSalariosHomens(int tamanhoV, Pessoa pessoas[tamanhoV]){
-    float somaSalario = 0, mediaSalarial;
+    float somaSalario = 0, mediaSalarial = 0;
     int quantHomens = 0;
 
     for(int i = 0; i < tamanhoV; i++){
@@ -156,6 +152,8 @@ void mediaSalariosHomens(int tamanhoV, Pessoa pessoas[tamanhoV]){
 
 };
 
+// Função que calcula a média do peso das mulheres cadastradas
+
 float mediaPesosMulheres(int tamanhoV, Pessoa pessoas[tamanhoV]){
     float somaPeso = 0, mediaPeso;
     int quantMulheres = 0;
@@ -166,15 +164,20 @@ float mediaPesosMulheres(int tamanhoV, Pessoa pessoas[tamanhoV]){
             quantMulheres += 1;
         }
     }
+    if(quantMulheres == 0) return 0; // Para quando não há cadastro de mulheres
     mediaPeso = somaPeso / (float) quantMulheres;
     return mediaPeso;
 };
+
+// Função que devolve a media do peso das mulheres cadastradas
 
 void relatorioMediaPesoMulheres(float mediaPeso){
     imprimeHeaderRelatorio("Relatório Peso Mulheres:");
     printf("\n| Media de peso: %.2f", mediaPeso);
     imprimeLinha('-', 50);
 }
+
+// Função que calcula e devolve o IMC das pessoas cadastradas
 
 void mostrarIMC(int tamanhoV, Pessoa pessoas[tamanhoV]){
     float imc, peso, altura;
@@ -183,10 +186,12 @@ void mostrarIMC(int tamanhoV, Pessoa pessoas[tamanhoV]){
        altura = (float) pessoas[i].altura *0.01;
        peso = pessoas[i].peso;
        imc = peso/(altura * altura);
-       printf("| IMC Pessoa %-2d: %-2.2f \n", i+1, imc);
+       printf("\n| IMC Pessoa %-2d: %-2.2f", i+1, imc);
     }
     imprimeLinha('-', 50);
 };
+
+// Função que calcula a pessoa mais alta e devolve seu nome
 
 void pessoaMaisAlta(int tamanhoV, Pessoa pessoas[tamanhoV]){
     char nomePessoaMaisAlta[T_STRING];
@@ -204,6 +209,8 @@ void pessoaMaisAlta(int tamanhoV, Pessoa pessoas[tamanhoV]){
     printf("\n| Nome pessoa mais alta: %s", nomePessoaMaisAlta);
     imprimeLinha('-', 50);
 };
+
+// Função que calcula a pessoa com altura mais baixa e devolve seu código
 
 void pessoaMaisBaixa(int tamanhoV, Pessoa pessoas[tamanhoV]){
     int alturaMaisBaixa = INT_MAX, codigo;
@@ -258,6 +265,9 @@ void menosDeMilSalario(int tamanhoV, Pessoa pessoas[tamanhoV]){
             printf("\n| Nome: %s", pessoas[i].nome);
             printf("\n| Endereço: %s", pessoas[i].endereco);
             imprimeLinha('-', 50);
+        }else{
+            printf("\n| Nenhuma pessoa encontrada!");
+            imprimeLinha('-', 50);
         }
 
     }
@@ -267,14 +277,14 @@ void menosDeMilSalario(int tamanhoV, Pessoa pessoas[tamanhoV]){
 void explicacaoMenu(){
     printf("\nSelecione o relatório desejado:\n");
     printf("1. Mostrar Dados\n");
-    printf("2. Pessoa Mais Alta\n");
-    printf("3. Pessoa Mais Baixa\n");
-    printf("4. Mulheres Abaixo da Média de Peso\n");
-    printf("5. Mostrar IMC\n");
-    printf("6. Pessoas com Salário < R$ 1000\n");
+    printf("2. Média de Peso das Mulheres\n");
+    printf("3. Média de Salários dos Homens\n");
+    printf("4. Mostrar IMC\n");
+    printf("5. Nome da Pessoa Mais Alta\n");
+    printf("6. Código da Pessoa Mais Baixa\n");
     printf("7. Pessoas com Salário Acima da Média\n");
-    printf("8. Média de Salários dos Homens\n");
-    printf("9. Média de Peso das Mulheres\n");
+    printf("8. Pessoas com Salário < R$ 1000\n");
+    printf("9. Mulheres Abaixo da Média de Peso\n");
     printf("0. Sair\n");
     printf("Opção: ");
 
@@ -291,31 +301,31 @@ void menuRelatorios(int tamanhoV, Pessoa pessoas[tamanhoV]){
 
         switch (opcao) {
             case 1:
-                mostraDados(tamanhoVetor, vetorPessoas);
+                mostraDados(tamanhoV, pessoas);
                 break;
             case 2:
-                relatorioPessoaMaisAlta(pessoaMaisAlta(tamanhoVetor, vetorPessoas));
+                relatorioMediaPesoMulheres(mediaPeso);
                 break;
             case 3:
-                relatorioPessoaMaisBaixa(pessoaMaisBaixa(tamanhoVetor, vetorPessoas));
+                mediaSalariosHomens(tamanhoV, pessoas);
                 break;
             case 4:
-                relatorioMulheresAbaixoDaMediaPeso(mulheresAbaixoDaMediaPeso(mediaPeso, tamanhoVetor, vetorPessoas));
+                mostrarIMC(tamanhoV, pessoas);
                 break;
             case 5:
-                mostrarIMC(tamanhoVetor, vetorPessoas);
+                pessoaMaisAlta(tamanhoV, pessoas);
                 break;
             case 6:
-                menosDeMilSalario(tamanhoVetor, vetorPessoas);
+                pessoaMaisBaixa(tamanhoV, pessoas);
                 break;
             case 7:
-                relatorioPesSalarioAcimaMedia(numPesSalarioAcimaMedia(tamanhoVetor, vetorPessoas));
+                numPesSalarioAcimaMedia(tamanhoV, pessoas);
                 break;
             case 8:
-                relatorioMediaSalariosHomens(mediaSalariosHomens(tamanhoVetor, vetorPessoas));
+                menosDeMilSalario(tamanhoV, pessoas);
                 break;
             case 9:
-                relatorioMediaPesoMulheres(mediaPesosMulheres(tamanhoVetor, vetorPessoas));
+                mulheresAbaixoDaMediaPeso(mediaPeso, tamanhoV, pessoas);
                 break;
             case 0:
                 printf("Saindo...\n");
@@ -336,13 +346,13 @@ void menuRelatorios(int tamanhoV, Pessoa pessoas[tamanhoV]){
 
 int main(){
     //Variável para definir a quantidade de pessoas a serem computadas
-    int tamanhoVetor = 4;
-    Pessoa *vetorPessoas[tamanhoVetor];
+    int tamanhoVetor = 1;
+    Pessoa vetorPessoas[tamanhoVetor];
 
     //Deixando a linguagem em português, para aceitar acentos e caracteres especiais
     setlocale(LC_ALL, "portuguese");
 
-    recebeDadosEntrada(tamanhoVetor, &vetorPessoas);
+    recebeDadosEntrada(tamanhoVetor, vetorPessoas);
     menuRelatorios(tamanhoVetor, vetorPessoas);
 
     return 0;
