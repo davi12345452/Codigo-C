@@ -26,11 +26,11 @@ char *lerStringEntreAspas(FILE *arq){
         return NULL;
     }
 
-    bool found_closing_quote = false;
+    bool encontrarAspaFinal = false;
     // Lê os caracteres entre as aspas até atingir o limite de 30 ou encontrar a segunda aspa
     while ((c = fgetc(arq)) != EOF) {
         if (c == '\"') {
-            found_closing_quote = true;
+            encontrarAspaFinal = true;
             break;
         }
         if (pos < 30) {
@@ -39,7 +39,7 @@ char *lerStringEntreAspas(FILE *arq){
     }
 
     // Se não encontrou a segunda aspa, retorna NULL
-    if (!found_closing_quote) {
+    if (!encontrarAspaFinal) {
         free(str);
         return NULL;
     }
