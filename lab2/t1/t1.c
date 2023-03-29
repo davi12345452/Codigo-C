@@ -371,7 +371,7 @@ int main(){
     setlocale(LC_ALL, "portuguese");
 
     // DEFINA AQUI A QUANTIDADE DE PESSOAS A SEREM CADASTRADAS:
-    int tamanhoVetor = 10;
+    int tamanhoVetor = 2;
 
     Pessoa vetorPessoas[tamanhoVetor];
 

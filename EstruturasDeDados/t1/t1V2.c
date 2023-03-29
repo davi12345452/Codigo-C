@@ -11,11 +11,41 @@ typedef struct {
     float media;
 } aluno_t;
 
+
 char *lerStringEntreAspas(FILE *arq){
-    while(true){
-        // Vai precisar encontrar a primeira aspa e, a partir dela
-        // salvar caractere por caractere, até achar a última aspa
+    char *str = (char *) malloc(31 * sizeof(char));
+    int pos = 0;
+    int c;
+
+    // Encontra a primeira aspa
+    while ((c = fgetc(arq)) != EOF && c != '\"') {}
+
+    // Se não encontrou a primeira aspa, retorna NULL
+    if (c != '\"') {
+        free(str);
+        return NULL;
     }
+
+    bool found_closing_quote = false;
+    // Lê os caracteres entre as aspas até atingir o limite de 30 ou encontrar a segunda aspa
+    while ((c = fgetc(arq)) != EOF) {
+        if (c == '\"') {
+            found_closing_quote = true;
+            break;
+        }
+        if (pos < 30) {
+            str[pos++] = (char)c;
+        }
+    }
+
+    // Se não encontrou a segunda aspa, retorna NULL
+    if (!found_closing_quote) {
+        free(str);
+        return NULL;
+    }
+
+    str[pos] = '\0';
+    return str;
 }
 
 int le_arq(aluno_t **alunos, char *nome_do_arquivo) {
@@ -39,12 +69,18 @@ int le_arq(aluno_t **alunos, char *nome_do_arquivo) {
     */
 
     for(int i = 0; i < num_alunos; i++){
-        char temp_nome[30];
-        fscanf(file, "%d %s %f %f", &((*alunos)[i].matricula), temp_nome,
-                                     &((*alunos)[i].nota1), &((*alunos)[i].nota2));
+        fscanf(file, "%d", &((*alunos)[i].matricula));
 
-        (*alunos)[i].nome = (char *) malloc((strlen(temp_nome) + 1) * sizeof(char));
-        strcpy((*alunos)[i].nome, temp_nome);
+        (*alunos)[i].nome = lerStringEntreAspas(file);
+        if (!(*alunos)[i].nome) {
+            return -1;
+        }
+
+        fscanf(file, "%f %f", &((*alunos)[i].nota1), &((*alunos)[i].nota2));
+
+        int c;
+        while ((c = fgetc(file)) != '\n' && c != EOF) {}
+    }
 
         /*
             Para evitar a leitura de uma terceira nota, fica-se fazendo
@@ -52,9 +88,7 @@ int le_arq(aluno_t **alunos, char *nome_do_arquivo) {
             Assim, o loop vai lendo os dados, mas sem armazená-los, acabando
             quando inicia-se uma nova linha, ou quando o arquivo acaba.
         */
-        int c;
-        while ((c = fgetc(file)) != '\n' && c != EOF) {}
-    }
+
     fclose(file);
 
     return num_alunos;
