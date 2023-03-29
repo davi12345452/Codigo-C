@@ -72,7 +72,7 @@ void ler_string(char *mensagem, char *str) {
 
     printf("%s", mensagem);
     getchar();
-    fgets(str + 1, T_STRING - 1, stdin);
+    fgets(str, T_STRING, stdin);
     // Remover o caractere de nova linha no final da string
     /*
         Ao usar o fgets, caso haja espaço para mais caracteres e se clicar enter para enviar
@@ -112,8 +112,8 @@ void recebeDadosEntrada(int tamanhoV, Pessoa vetor[tamanhoV]){
         imprimeLinha('-', 40);
         ler_int("\nDigite o código: ", &vetor[i].codigo);
         ler_string("Digite o nome: ", vetor[i].nome);
-        ler_string("Digite o endereço: ", vetor[i].endereco);
         ler_float("Digite o peso(kg): ", &vetor[i].peso);
+        ler_string("Digite o endereço: ", vetor[i].endereco);
         ler_int("Digite a altura(cm): ", &vetor[i].altura);
         ler_char("Digite o sexo(F/M): ", &vetor[i].sexo, 'f', 'm');
         ler_float("Digite o salário(R$/mês): ", &vetor[i].salario);
@@ -129,8 +129,8 @@ void mostraDados(int tamanhoV, Pessoa pessoas[tamanhoV]){
         imprimeLinha('-', 50);
         printf("\n| Código:     %-d \n", pessoas[i].codigo);
         printf("| Nome:       %-s \n", pessoas[i].nome);
-        printf("| Endereço:   %-s \n", pessoas[i].endereco);
         printf("| Peso(kg):   %-.2f \n", pessoas[i].peso);
+        printf("| Endereço:   %-s \n", pessoas[i].endereco);
         printf("| Altura(cm): %-d \n", pessoas[i].altura);
         printf("| Sexo:       %-c \n", pessoas[i].sexo);
         printf("| Salário:    R$%-.2f ", pessoas[i].salario);
@@ -366,16 +366,16 @@ void menuRelatorios(int tamanhoV, Pessoa pessoas[tamanhoV]){
 
 int main(){
 
-    // DEFINA AQUI A QUANTIDADE DE PESSOAS A SEREM CADASTRADAS:
-    int tamanhoVetor = 1;
-
-    Pessoa vetorPessoas[tamanhoVetor];
-
     //Deixando a linguagem em português, para aceitar acentos e caracteres especiais
     setlocale(LC_ALL, "portuguese");
 
+    // DEFINA AQUI A QUANTIDADE DE PESSOAS A SEREM CADASTRADAS:
+    int tamanhoVetor = 1;
+
+    Pessoa *vetorPessoas[tamanhoVetor];
+
     // DADOS DE ENTRADA:
-    recebeDadosEntrada(tamanhoVetor, vetorPessoas);
+    recebeDadosEntrada(tamanhoVetor, &vetorPessoas);
 
     // DADOS DE SAÍDA:
     menuRelatorios(tamanhoVetor, vetorPessoas);
