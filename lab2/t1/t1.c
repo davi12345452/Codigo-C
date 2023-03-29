@@ -100,7 +100,8 @@ void imprimeHeaderRelatorio(char *frase){
 }
 
 
-//Função que recebe os dados de entrada das pessoas
+//Função que recebe os dados de entrada das pessoas usando as funções
+//auxiliares previamente declaradas
 void recebeDadosEntrada(int tamanhoV, Pessoa vetor[tamanhoV]){
     imprimeLinha('*', 40);
     printf("\n\tCADASTRO DE PESSOAS\n");
@@ -120,6 +121,7 @@ void recebeDadosEntrada(int tamanhoV, Pessoa vetor[tamanhoV]){
     imprimeLinha('-', 40);
 }
 
+// Função que gera um relatório com todas as pessoas cadastradas
 void mostraDados(int tamanhoV, Pessoa pessoas[tamanhoV]){
     imprimeHeaderRelatorio("       DADOS DE PESSOAS CADASTRADAS");
     for (int i = 0; i < tamanhoV; i++) {
@@ -137,6 +139,7 @@ void mostraDados(int tamanhoV, Pessoa pessoas[tamanhoV]){
 
 };
 
+// Função que calcula e exibe a media salarial dos homens cadastrados
 void mediaSalariosHomens(int tamanhoV, Pessoa pessoas[tamanhoV]){
     float somaSalario = 0, mediaSalarial = 0;
     int quantHomens = 0;
@@ -171,7 +174,7 @@ float mediaPesosMulheres(int tamanhoV, Pessoa pessoas[tamanhoV]){
     return mediaPeso;
 };
 
-// Função que devolve a media do peso das mulheres cadastradas
+// Função que gera um relatório dizendo o peso médio das mulheres cadastradas
 
 void relatorioMediaPesoMulheres(float mediaPeso){
     imprimeHeaderRelatorio("Relatório Peso Mulheres:");
@@ -179,7 +182,7 @@ void relatorioMediaPesoMulheres(float mediaPeso){
     imprimeLinha('-', 50);
 }
 
-// Função que calcula e devolve o IMC das pessoas cadastradas
+// Função que calcula e devolve em um relatório, o IMC das pessoas cadastradas
 
 void mostrarIMC(int tamanhoV, Pessoa pessoas[tamanhoV]){
     float imc, peso, altura;
@@ -193,7 +196,7 @@ void mostrarIMC(int tamanhoV, Pessoa pessoas[tamanhoV]){
     imprimeLinha('-', 50);
 };
 
-// Função que calcula a pessoa mais alta e devolve seu nome
+// Função que calcula a pessoa mais alta e devolve um relatório com seu nome
 
 void pessoaMaisAlta(int tamanhoV, Pessoa pessoas[tamanhoV]){
     char nomePessoaMaisAlta[T_STRING];
@@ -212,7 +215,7 @@ void pessoaMaisAlta(int tamanhoV, Pessoa pessoas[tamanhoV]){
     imprimeLinha('-', 50);
 };
 
-// Função que calcula a pessoa com altura mais baixa e devolve seu código
+// Função que calcula a pessoa com altura mais baixa e devolve um relatório com seu código
 
 void pessoaMaisBaixa(int tamanhoV, Pessoa pessoas[tamanhoV]){
     int alturaMaisBaixa = INT_MAX, codigo;
@@ -228,6 +231,9 @@ void pessoaMaisBaixa(int tamanhoV, Pessoa pessoas[tamanhoV]){
     imprimeLinha('-', 50);
 };
 
+
+// Função que calcula o salário médio, após isso, registra quantas pessoas
+// recebem acima desse valor e gera um relatório.
 
 void numPesSalarioAcimaMedia(int tamanhoV, Pessoa pessoas[tamanhoV]){
     float soma = 0, media;
@@ -247,6 +253,9 @@ void numPesSalarioAcimaMedia(int tamanhoV, Pessoa pessoas[tamanhoV]){
 };
 
 
+// Função que recebe um peso médio e gera um relatório mostrando quantas mulheres
+// estão abaixo do peso médio das mulheres cadastradas
+
 void mulheresAbaixoDaMediaPeso(float mediaPeso, int tamanhoV, Pessoa pessoas[tamanhoV]){
     int quant = 0;
     for(int i = 0; i < tamanhoV; i++){
@@ -258,6 +267,9 @@ void mulheresAbaixoDaMediaPeso(float mediaPeso, int tamanhoV, Pessoa pessoas[tam
     printf("\n| Quantidade de mulheres abaixo da média: %d", quant);
     imprimeLinha('-', 50);
 }
+
+// Função que busca e gera um relatório das pessoas cadastradas que recebem menos de
+// 1000 reais de salário. Devolve-se o número de cadastro, nome e endereço.
 
 void menosDeMilSalario(int tamanhoV, Pessoa pessoas[tamanhoV]){
     imprimeHeaderRelatorio("Relatório pessoas com salário < 1000:");
@@ -276,6 +288,8 @@ void menosDeMilSalario(int tamanhoV, Pessoa pessoas[tamanhoV]){
 
 }
 
+// Função de exibição das opções para o menu de relatórios.
+
 void explicacaoMenu(){
     printf("\nSelecione o relatório desejado:\n");
     printf("1. Mostrar Dados\n");
@@ -292,9 +306,12 @@ void explicacaoMenu(){
 
 }
 
+// Função que gera os relatórios de acordo com o desejo do usuário
+
 void menuRelatorios(int tamanhoV, Pessoa pessoas[tamanhoV]){
     int opcao;
     char continuar;
+    // Cálculo do peso medio de mulheres para ser usado em relatórios abaixo
     float mediaPeso = mediaPesosMulheres(tamanhoV, pessoas);
 
     do {
@@ -337,6 +354,7 @@ void menuRelatorios(int tamanhoV, Pessoa pessoas[tamanhoV]){
                 break;
         }
 
+        // Aqui reaproveita-se a função ler_char, quando o usuário indica se deseja ou não continuar
         if (opcao != 0) {
             ler_char("\nDeseja continuar? (S/N): ", &continuar, 'S', 'N');
         }
@@ -347,14 +365,19 @@ void menuRelatorios(int tamanhoV, Pessoa pessoas[tamanhoV]){
 
 
 int main(){
-    //Variável para definir a quantidade de pessoas a serem computadas
+
+    // DEFINA AQUI A QUANTIDADE DE PESSOAS A SEREM CADASTRADAS:
     int tamanhoVetor = 1;
+
     Pessoa vetorPessoas[tamanhoVetor];
 
     //Deixando a linguagem em português, para aceitar acentos e caracteres especiais
     setlocale(LC_ALL, "portuguese");
 
+    // DADOS DE ENTRADA:
     recebeDadosEntrada(tamanhoVetor, vetorPessoas);
+
+    // DADOS DE SAÍDA:
     menuRelatorios(tamanhoVetor, vetorPessoas);
 
     return 0;
