@@ -2,10 +2,13 @@
    #ifndef _LISTA_H_
    #define _LISTA_H_
    #include <stdbool.h>
-   
+
+   typedef double dado_t;
    typedef struct _lista *Lista;
    
+   
    Lista lista_cria(int cap);
+
    void lista_destroi(Lista l);
    
    // retorna o número de dados atualmente na lista l

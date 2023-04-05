@@ -1,6 +1,10 @@
    // lista.c
    #include "lista.h"
-   
+   #include <stdio.h>
+   #include <stdlib.h>
+
+   typedef double dado_t;
+
    typedef struct _lista {
      int cap;
      int num;
