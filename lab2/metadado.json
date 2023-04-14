@@ -1,0 +1,12 @@
+{
+    "name": "NFT1",
+    "description": "Teste para a criação de NFTs com vídeos",
+    "image": "https://parsefiles.back4app.com/FCA8qQaLpa1OlTxpIFXJoz6oPpzGe0jGH0CPsGhu/6beb7e56564165d5a211973d5881540e_04_Memories_Weird_Band_2023.png",
+    "animation_url": "https://parsefiles.back4app.com/FCA8qQaLpa1OlTxpIFXJoz6oPpzGe0jGH0CPsGhu/232fbbcc3ec4cc1f9fdaab4bb7dc2877_sneeze-7_taacW6RZ.mp4",
+    "attributes": [
+      {
+        "trait_type": "Atributo 1",
+        "value": "5/10"
+      }
+    ]
+  }
