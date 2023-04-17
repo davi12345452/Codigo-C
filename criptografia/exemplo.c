@@ -1,5 +1,3 @@
-// Aluno: Davi Janisch Maia
-
 #include <stdio.h>
 #include <ctype.h>
 #include <string.h>
@@ -7,18 +5,12 @@
 
 #define ALPHABET_SIZE 26
 
-// Definindo a estrutura, para análise de 1 letra
 typedef struct Letra {
     int freq;
     char letra;
 } letra;
 
-/*
-    Nessa função, há a cifra de argumento, armazenando a letra e sua frequência
-    dentro de um vetor da estrutura letra. No final, o programa ainda ajusta e
-    ordena de forma decrescente de acordo com a frequencia.
-*/
-
+// Função para calcular a frequência de cada letra na cifra
 letra *calcularFrequencia(char *cifra) {
     letra *freq_tabela = (letra *) malloc(ALPHABET_SIZE * sizeof(letra));
     int i, j;
@@ -33,6 +25,7 @@ letra *calcularFrequencia(char *cifra) {
         }
     }
 
+    // ordenar a tabela por frequência usando bubble sort
     for (i = 0; i < ALPHABET_SIZE - 1; i++) {
         for (j = 0; j < ALPHABET_SIZE - i - 1; j++) {
             if (freq_tabela[j].freq < freq_tabela[j + 1].freq) {
@@ -47,14 +40,8 @@ letra *calcularFrequencia(char *cifra) {
 }
 
 
-/*
-    Nessa função, há o armazenamento da letras e suas frequencias 
-    dentro de um arquivo, como solicitado, ignorando letras com 0
-    frequencia. 
-*/
 int imprimeValores (letra *freq_tabela, char *nomeArquivo){
 
-    //Abre o arquivo
     FILE *file = fopen(nomeArquivo, "w");
 
     if (file == NULL) {
@@ -88,3 +75,5 @@ int main() {
 
     return 0;
 }
+
+

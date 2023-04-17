@@ -1,26 +1,21 @@
-a: 0
-b: 0
-c: 1
-d: 2
-e: 4
-f: 2
-g: 3
-h: 1
-i: 0
-j: 0
-k: 2
-l: 3
-m: 0
-n: 0
-o: 2
-p: 0
-q: 5
-r: 2
-s: 0
-t: 7
-u: 1
-v: 0
-w: 1
-x: 1
-y: 1
-z: 1
+Tabela de frequencia para cada caracteres:
+-------------------
+| t ----> 7 Vezes |
+| a ----> 6 Vezes |
+| q ----> 5 Vezes |
+| e ----> 4 Vezes |
+| g ----> 3 Vezes |
+| l ----> 3 Vezes |
+| d ----> 2 Vezes |
+| f ----> 2 Vezes |
+| k ----> 2 Vezes |
+| o ----> 2 Vezes |
+| r ----> 2 Vezes |
+| c ----> 1 Vezes |
+| h ----> 1 Vezes |
+| u ----> 1 Vezes |
+| w ----> 1 Vezes |
+| x ----> 1 Vezes |
+| y ----> 1 Vezes |
+| z ----> 1 Vezes |
+-------------------
