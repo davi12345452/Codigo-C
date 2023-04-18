@@ -28,4 +28,3 @@ struct municipio
     int** dados; //matriz de dados -> dia / novos_caso / óbitos
 };
 typedef struct municipio Municipio;
-
