@@ -1,0 +1,2 @@
+|    | Muncipio             | Confirmados  | Novos Confirmados  | Incidencia /100 mil hab  | Obitos | Novos Obitos  | Mortalidade /100 mil hab |
+|  0 | svewe                | 343          | 343                | 6288,96                  | 32     | 32            | 586,73                   |
