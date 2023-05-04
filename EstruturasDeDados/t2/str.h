@@ -61,7 +61,7 @@ bool str_igual(Str s, Str o);
 // se 'p' antes do início de 's', deve ser tratado cono logo antes do início
 // valores negativos de 'p' referem-se ao final de 's' (-1 é logo após o final de 's',
 //  -2 logo antes do último caractere, etc.)
-Str str_altera(Str s, int p, int n, Str o);
+void str_altera(Str s, int p, int n, Str o);
 
 #ifdef TESTE
 // testa o TAD

@@ -14,7 +14,7 @@ struct _str {
 };
 
 // função auxiliar que retorna o valor de 'a', ajustado entre min e max
-int ajusta(int a, int min, int max)
+static int ajusta(int a, int min, int max)
 {
   if (a<min) return min;
   if (a>max) return max;
@@ -70,15 +70,17 @@ void str_destroi(Str s)
 
 int str_tam(Str s)
 {
+  if (s == NULL) return 0;
   return strlen(s->bytes);
 }
 
 int str_numbytes(Str s)
 {
+  if (s == NULL) return 0;
   return strlen(s->bytes);
 }
 
-int str_char(Str s, int i)
+chu str_char(Str s, int i)
 {
   int t = str_tam(s);
   if (i < 0) {
@@ -133,7 +135,7 @@ Str str_substr(Str s, int p, int n)
 
 
 // retorna a posição da primeira ocorrência do caractere 'c' em 's' ou -1
-int str_poschar(Str s, int c)
+int str_poschar(Str s, chu c)
 {
   for (int i=0; ; i++) {
     int ci = str_char(s, i);
@@ -143,9 +145,11 @@ int str_poschar(Str s, int c)
   return -1;
 }
 
-// retorna 'true' se 's' e 'o' forem iguais
+// retorna 'true' se as strings em 's' e 'o' forem iguais
 bool str_igual(Str s, Str o)
 {
+  if (s == o) return true;
+  if (s == NULL || o == NULL) return false;
   return strcmp(s->bytes, o->bytes) == 0;
 }
 
@@ -186,6 +190,20 @@ void str_altera(Str s, int p, int n, Str o)
   s->bytes = b;
 }
 
+void str_cstring(Str s, char *p)
+{
+  if (s == NULL) {
+    *p = '\0';
+  } else {
+    strcpy(p, s->bytes);
+  }
+}
+
+void str_grava(Str s, FILE *arq)
+{
+  fputs(s->bytes, arq);
+}
+
 #ifdef TESTE
 // testa o TAD
 
@@ -194,7 +212,6 @@ void str_altera(Str s, int p, int n, Str o)
 void str_teste(void)
 {
   Str s1, s2, s3, s4;
-  printf("Teste inicio");
   s1 = str_cria("aba");
   s2 = str_cria("caxi");
   s3 = str_cria("abacaxi");
@@ -204,7 +221,5 @@ void str_teste(void)
   assert(str_tam(s4) == 0);
   str_altera(s3, 0, 3, s4);
   assert(str_igual(s2, s3));
-  printf("Teste final");
 }
 #endif
-
