@@ -1,4 +1,5 @@
 #include "str.h"
+#include "chu.h"
 #include <string.h>
 #include <stdlib.h>
 
