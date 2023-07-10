@@ -71,7 +71,7 @@ void destruirListaMedicos(ListaMedicos *lista) {
 Paciente *buscarPaciente(ListaPacientes *lista, char *cpf) {
   PacienteNode *atual = lista->primeiro;
   while (atual != NULL) {
-    if (strcmp(atual->paciente.cpf, cpf) == 0) {
+    if (strncmp(atual->paciente.cpf, cpf, sizeof(atual->paciente.cpf)) == 0) {
       return &(atual->paciente);
     }
     atual = atual->prox;
@@ -102,21 +102,29 @@ Medico *buscarMedico(ListaMedicos *lista, char *crm) {
  
 void cadastrarPaciente(ListaPacientes *lista, char *cpf, char *nome, char *telefone) {
   // Verificar se o CPF já está cadastrado
-  PacienteNode *atual = lista->primeiro;
-  while (atual != NULL) {
-    if (strcmp(atual->paciente.cpf, cpf) == 0) {
+  if(buscarPaciente(lista, cpf) != NULL) {
       printf("CPF já cadastrado.\n");
-      return; 
-    }
-    atual = atual->prox;
+      return;
   }
 
   PacienteNode *novoNode = (PacienteNode *)malloc(sizeof(PacienteNode));
-  strcpy(novoNode->paciente.cpf, cpf);
-  strcpy(novoNode->paciente.nome, nome);
-  strcpy(novoNode->paciente.telefone, telefone);
+  if (novoNode == NULL) {
+    printf("Erro na alocação de memória.\n");
+    return;
+  }
+  
+  strncpy(novoNode->paciente.cpf, cpf, sizeof(novoNode->paciente.cpf));
+  strncpy(novoNode->paciente.nome, nome, sizeof(novoNode->paciente.nome));
+  strncpy(novoNode->paciente.telefone, telefone, sizeof(novoNode->paciente.telefone));
+  
+  // Coloca o finalizador de string no último caractere, caso os inputs sejam maiores que o buffer
+  novoNode->paciente.cpf[sizeof(novoNode->paciente.cpf) - 1] = '\0';
+  novoNode->paciente.nome[sizeof(novoNode->paciente.nome) - 1] = '\0';
+  novoNode->paciente.telefone[sizeof(novoNode->paciente.telefone) - 1] = '\0';
+  
   novoNode->prox = lista->primeiro;
   lista->primeiro = novoNode;
+  
   printf("Paciente cadastrado com sucesso.\n");
 }
 
@@ -148,17 +156,50 @@ void cadastrarMedico(ListaMedicos *lista, char *crm, char *nome, char *especiali
 }
 
 /*
+  Essa foi a função auxiliar para ver se o paciente teria conflito com o horário da consulta
+*/
+ 
+int pacienteTemConsultaNoHorario(ListaConsultas *lista, Paciente *paciente, DataHora dataHora) {
+  int horario = dataHora.hora * 60 + dataHora.minuto;
+  
+  Consulta *atual = lista->primeiro;
+  while (atual != NULL) {
+    int horarioConsulta = atual->dataHora.hora * 60 + atual->dataHora.minuto;
+    int fimConsulta = horarioConsulta + 30; // Duração fixa de 30 minutos para cada consulta
+
+    // Verifica se há conflito de horário com outra consulta do paciente
+    if (strcmp(atual->paciente->cpf, paciente->cpf) == 0 &&
+        atual->dataHora.dia == dataHora.dia &&
+        atual->dataHora.mes == dataHora.mes &&
+        atual->dataHora.ano == dataHora.ano &&
+        horario >= horarioConsulta && horario < fimConsulta) {
+      return 1; 
+    }
+
+    atual = atual->prox;
+  }
+
+  return 0; 
+}
+
+/*
   Essa função ficou um pouco complexa. Primeiro verifica se está dentro do horário de atendimento. Optei por 30
   minutos mais cedo no final, pois considerei uma consulta com esse tempo. Depois converti para minutos e fiz análise, junto
   de uma função auxiliar abaixo, se o médico tinha algum consulta que conflitava e se o paciente também tinha alguma que conflitava
 */
  
-int horarioLivre(ListaConsultas *lista, Medico *medico, DataHora dataHora) {
-  if ((dataHora.hora < 8 || (dataHora.minuto > 30 && dataHora.hora > 11)) || (dataHora.hora < 14 || (dataHora.minuto > 30 && dataHora.hora > 17))) {
+int horarioLivre(ListaConsultas *lista, Medico *medico, DataHora dataHora, Paciente *paciente) {
+  int horario = dataHora.hora * 60 + dataHora.minuto;
+  /*
+    Aqui há um detalhe importante, não entendi perfeitamente se podem ser marcadas
+    até 12h e 18h ou se realizar as consultas até esse horário. Se for consultar,
+    basta retirar 30 minutos, ou seja, só poderia marcar até as 11:30 e a tarde até
+    as 17:30. Deixei comentado isso no If. Essa parte busca ver se está de acordo
+    com o horário de atendimento. 
+  */
+  if (!((horario >= 8*60 && horario <= 12*60/*-30*/) || (horario >= 14*60 && horario <= 18*60/*-30*/))) {
     return 0; // Horário fora do horário de atendimento do médico
   }
-  // Verifica se o horário está dentro do horário de atendimento do médico
-  int horario = dataHora.hora * 60 + dataHora.minuto;
 
   Consulta *atual = lista->primeiro;
   while (atual != NULL) {
@@ -182,35 +223,13 @@ int horarioLivre(ListaConsultas *lista, Medico *medico, DataHora dataHora) {
   }
   
   // Verifica se o paciente já possui uma consulta no mesmo horário
-  if (pacienteTemConsultaNoHorario(lista, dataHora)) {
+  if (pacienteTemConsultaNoHorario(lista,  paciente, dataHora)) {
     return 0; 
   }
 
   return 1; 
 }
 
-/*
-  Essa foi a função auxiliar para ver se o paciente teria conflito com o horário da consulta
-*/
- 
-int pacienteTemConsultaNoHorario(ListaConsultas *lista, DataHora dataHora) {
-  int horario = dataHora.hora * 60 + dataHora.minuto;
-  
-  Consulta *atual = lista->primeiro;
-  while (atual != NULL) {
-    int horarioConsulta = atual->dataHora.hora * 60 + atual->dataHora.minuto;
-    int fimConsulta = horarioConsulta + 30; // Duração fixa de 30 minutos para cada consulta
-
-    // Verifica se há conflito de horário com outra consulta do paciente
-    if (horario >= horarioConsulta && horario < fimConsulta) {
-      return 1; 
-    }
-
-    atual = atual->prox;
-  }
-
-  return 0; 
-}
 
 /*
   Essa função permite ao médico acrescentar uma descrição na estrutura Consulta, que está dentro da lista de Consultas;
@@ -260,8 +279,8 @@ void agendarConsulta(ListaConsultas *lista, ListaPacientes *listaPacientes, List
     return;
   }
   // Verifica conflito de horário
-  if (!horarioLivre(lista, medico, dataHora)) {
-    printf("Horário Indiponível\n");
+  if (!horarioLivre(lista, medico, dataHora, paciente)) {
+    printf("Horário Indisponível\n");
     return;
   }
 
@@ -275,6 +294,7 @@ void agendarConsulta(ListaConsultas *lista, ListaPacientes *listaPacientes, List
 
   novaConsulta->prox = lista->primeiro;
   lista->primeiro = novaConsulta;
+  printf("Consulta marcada com sucesso!\n");
 }
 
 /*
@@ -434,17 +454,9 @@ void listarPacientesPorMedico(ListaConsultas *lista, char *crm) {
       if (ultimoPaciente == NULL ||
           strcmp(atual->paciente->cpf, ultimoPaciente->cpf) != 0) {
         printf("Paciente: %s\n", atual->paciente->nome);
-        if (ultimoPaciente != NULL) {
-          free(ultimoPaciente);
-        }
-
         ultimoPaciente = atual->paciente;
       }
     }
     atual = atual->prox;
-  }
-
-  if (ultimoPaciente != NULL) {
-    free(ultimoPaciente);
   }
 }
