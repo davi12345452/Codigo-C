@@ -33,14 +33,14 @@ typedef struct {
 // Estrutura para definir a consulta. Utiliza estruturas de médico, paciente e
 // horário. Além de aplicar o conceito de encadeamento de listas.
 
-typedef struct {
+typedef struct _consulta{
   Paciente *paciente;
   Medico *medico;
   DataHora dataHora;
   char convenio[50];
   int status;
   char descricao[100];
-  struct Consulta *prox;
+  struct _consulta *prox;
 } Consulta;
 
 // Estrutura que define uma lista encadeada de estrutura Consulta
@@ -83,20 +83,26 @@ void destruirListaMedicos(ListaMedicos *lista);
 Paciente *buscarPaciente(ListaPacientes *lista, char *cpf);
 Medico *buscarMedico(ListaMedicos *lista, char *crm);
 
-void cadastrarPaciente(ListaPacientes *lista, char *cpf, char *nome, char *telefone);
-void cadastrarMedico(ListaMedicos *lista, char *crm, char *nome, char *especialidade, char *telefone);
+void cadastrarPaciente(ListaPacientes *lista, char *cpf, char *nome,
+                       char *telefone);
+void cadastrarMedico(ListaMedicos *lista, char *crm, char *nome,
+                     char *especialidade, char *telefone);
 
-int horarioLivre(ListaConsultas *lista, Medico *medico, DataHora dataHora);
-void adicionarDescricaoConsulta(ListaConsultas *lista, char *cpf, char *crm,  DataHora dataHora, char *descricao);
-void agendarConsulta(ListaConsultas *lista, ListaPacientes *listaPacientes, ListaMedicos *listaMedicos, char *cpf, char *crm, DataHora dataHora, char *convenio);
+int horarioLivre(ListaConsultas *lista, Medico *medico, DataHora dataHora, Paciente *paciente);
+void adicionarDescricaoConsulta(ListaConsultas *lista, char *cpf, char *crm,
+                                DataHora dataHora, char *descricao);
+void agendarConsulta(ListaConsultas *lista, ListaPacientes *listaPacientes,
+                     ListaMedicos *listaMedicos, char *cpf, char *crm,
+                     DataHora dataHora, char *convenio);
 void desmarcarConsulta(ListaConsultas *lista, char *cpf, DataHora dataHora);
 
 void listarConsultas(ListaConsultas *lista);
 void listarConsultasDia(ListaConsultas *lista, int dia, int mes, int ano);
 void listarConsultasPaciente(ListaConsultas *lista, char *cpf);
-void listarDescricaoConsulta(ListaConsultas *lista, char *cpf, DataHora dataHora);
-void listarConsultasEspecialidadeMes(ListaConsultas *lista, char *especialidade, int mes, int ano);
+void listarDescricaoConsulta(ListaConsultas *lista, char *cpf,
+                             DataHora dataHora);
+void listarConsultasEspecialidadeMes(ListaConsultas *lista, char *especialidade,
+                                     int mes, int ano);
 void listarPacientesPorMedico(ListaConsultas *lista, char *crm);
 
 #endif
-
