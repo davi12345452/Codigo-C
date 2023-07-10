@@ -29,8 +29,8 @@ void exibirMenu() {
 }
 
 /*
-  Essa função é a UI, que utiliza uma função de lista.h para cadastrar um paciente no
-  programa.
+  Essa função é a UI, que utiliza uma função de lista.h para cadastrar um
+  paciente no programa.
 */
 
 void _cadastrarPaciente(ListaPacientes *lista) {
@@ -39,19 +39,30 @@ void _cadastrarPaciente(ListaPacientes *lista) {
   char telefone[15];
 
   printf("Digite o CPF do paciente: ");
-  scanf("%s", cpf);
+  if (scanf("%s", cpf) != 1) {
+    printf("Erro ao ler o CPF do paciente.\n");
+    return; // ou trate o erro de acordo com a lógica do seu programa
+  }
+
   printf("Digite o nome do paciente: ");
   getchar();
-  fgets(nome, 100, stdin);
+  if (fgets(nome, 100, stdin) == NULL) {
+    printf("Erro ao ler o nome do paciente.\n");
+    return; // ou trate o erro de acordo com a lógica do seu programa
+  }
+
   printf("Digite o telefone do paciente: ");
-  scanf("%s", telefone);
+  if (scanf("%s", telefone) != 1) {
+    printf("Erro ao ler o telefone do paciente.\n");
+    return; // ou trate o erro de acordo com a lógica do seu programa
+  }
 
   cadastrarPaciente(lista, cpf, nome, telefone);
 }
 
 /*
-  Essa função é a UI, que utiliza uma função de lista.h para cadastrar um médico no
-  programa.
+  Essa função é a UI, que utiliza uma função de lista.h para cadastrar um médico
+  no programa.
 */
 
 void _cadastrarMedico(ListaMedicos *lista) {
@@ -61,20 +72,35 @@ void _cadastrarMedico(ListaMedicos *lista) {
   char telefone[15];
 
   printf("Digite o CRM do médico: ");
-  scanf("%s", crm);
+  if (scanf("%s", crm) != 1) {
+    printf("Erro ao ler o CRM do médico.\n");
+    return;
+  }
+
   printf("Digite o nome do médico: ");
   getchar();
-  fgets(nome, 100, stdin);
+  if (fgets(nome, 100, stdin) == NULL) {
+    printf("Erro ao ler o nome do médico.\n");
+    return;
+  }
+
   printf("Digite a especialidade do médico: ");
-  fgets(especialidade, 50, stdin);
+  if (fgets(especialidade, 50, stdin) == NULL) {
+    printf("Erro ao ler a especialidade do médico.\n");
+    return;
+  }
+
   printf("Digite o telefone do médico: ");
-  scanf("%s", telefone);
+  if (scanf("%s", telefone) != 1) {
+    printf("Erro ao ler o telefone do médico.\n");
+    return;
+  }
 
   cadastrarMedico(lista, crm, nome, especialidade, telefone);
 }
 
 /*
-  Nessa função, exibe-se a lista de médicos cadastrados no programa. 
+  Nessa função, exibe-se a lista de médicos cadastrados no programa.
 */
 
 void _listarMedicos(ListaMedicos *lista) {
@@ -98,7 +124,7 @@ void _listarMedicos(ListaMedicos *lista) {
 }
 
 /*
-  Nessa função, exibe-se a lista de pacientes cadastrados no programa. 
+  Nessa função, exibe-se a lista de pacientes cadastrados no programa.
 */
 
 void _listarPacientes(ListaPacientes *lista) {
@@ -121,28 +147,48 @@ void _listarPacientes(ListaPacientes *lista) {
 }
 
 /*
-  Essa função é a UI, que utiliza uma função de lista.h para o usuário marcar uma consulta.
-  Além disso, a função verifica se a data dada é válida, não com os horário do médico, mas
-  logicamente, como, não existe mês 13, hora 25...
+  Essa função é a UI, que utiliza uma função de lista.h para o usuário marcar
+  uma consulta. Além disso, a função verifica se a data dada é válida, não com
+  os horário do médico, mas logicamente, como, não existe mês 13, hora 25...
 */
 
-void _agendarConsulta(ListaConsultas *lista, ListaMedicos *listaM,  ListaPacientes *listaP) {
+void _agendarConsulta(ListaConsultas *lista, ListaMedicos *listaM,
+                      ListaPacientes *listaP) {
   char cpf[12];
   char crm[10];
   int dia, mes, ano, hora, minuto;
   char convenio[50];
 
   printf("Digite o CPF do paciente: ");
-  scanf("%s", cpf);
+  if (scanf("%s", cpf) != 1) {
+    printf("Erro ao ler o CPF do paciente.\n");
+    return;
+  }
+
   printf("Digite o CRM do médico: ");
-  scanf("%s", crm);
+  if (scanf("%s", crm) != 1) {
+    printf("Erro ao ler o CRM do médico.\n");
+    return;
+  }
+
   printf("Digite a data da consulta (DD MM AAAA): ");
-  scanf("%d %d %d", &dia, &mes, &ano);
+  if (scanf("%d %d %d", &dia, &mes, &ano) != 3) {
+    printf("Erro ao ler a data da consulta.\n");
+    return;
+  }
+
   printf("Digite o horário da consulta (HH MM): ");
-  scanf("%d %d", &hora, &minuto);
+  if (scanf("%d %d", &hora, &minuto) != 2) {
+    printf("Erro ao ler o horário da consulta.\n");
+    return;
+  }
+
   printf("Digite o convênio: ");
   getchar();
-  fgets(convenio, 50, stdin);
+  if (fgets(convenio, 50, stdin) == NULL) {
+    printf("Erro ao ler o convênio.\n");
+    return;
+  }
 
   if (dia < 1 || dia > 31 || mes < 1 || mes > 12 || ano < 0) {
     printf("Data inválida!\n");
@@ -175,16 +221,35 @@ void _adicionarDescricao(ListaConsultas *lista) {
   int dia, mes, ano, hora, minuto;
 
   printf("Digite o CPF do paciente: ");
-  scanf("%s", cpf);
+  if (scanf("%s", cpf) != 1) {
+    printf("Erro ao ler o CPF do paciente.\n");
+    return;
+  }
+
   printf("Digite o CRM do médico: ");
-  scanf("%s", crm);
+  if (scanf("%s", crm) != 1) {
+    printf("Erro ao ler o CRM do médico.\n");
+    return;
+  }
+
   printf("Digite a data da consulta (DD MM AAAA): ");
-  scanf("%d %d %d", &dia, &mes, &ano);
+  if (scanf("%d %d %d", &dia, &mes, &ano) != 3) {
+    printf("Erro ao ler a data da consulta.\n");
+    return;
+  }
+
   printf("Digite o horário da consulta (HH MM): ");
-  scanf("%d %d", &hora, &minuto);
+  if (scanf("%d %d", &hora, &minuto) != 2) {
+    printf("Erro ao ler o horário da consulta.\n");
+    return;
+  }
+
   printf("Descreva a consulta: ");
   getchar();
-  fgets(descricao, 100, stdin);
+  if (fgets(descricao, 100, stdin) == NULL) {
+    printf("Erro ao ler a descrição da consulta.\n");
+    return;
+  }
 
   DataHora dataHora;
   dataHora.dia = dia;
@@ -199,7 +264,7 @@ void _adicionarDescricao(ListaConsultas *lista) {
 /*
   Essa função é a UI, que utiliza uma função de lista.h para o usuário poder
   desmarcar uma consulta. Ele fornece seus dados, os quais utilizou para marcar
-  e desmarca ela. 
+  e desmarca ela.
 */
 
 void _desmarcarConsulta(ListaConsultas *lista) {
@@ -207,11 +272,22 @@ void _desmarcarConsulta(ListaConsultas *lista) {
   int dia, mes, ano, hora, minuto;
 
   printf("Digite o CPF do paciente: ");
-  scanf("%s", cpf);
+  if (scanf("%s", cpf) != 1) {
+    printf("Erro ao ler o CPF do paciente.\n");
+    return;
+  }
+
   printf("Digite a data da consulta (DD MM AAAA): ");
-  scanf("%d %d %d", &dia, &mes, &ano);
+  if (scanf("%d %d %d", &dia, &mes, &ano) != 3) {
+    printf("Erro ao ler a data da consulta.\n");
+    return;
+  }
+
   printf("Digite o horário da consulta (HH MM): ");
-  scanf("%d %d", &hora, &minuto);
+  if (scanf("%d %d", &hora, &minuto) != 2) {
+    printf("Erro ao ler o horário da consulta.\n");
+    return;
+  }
 
   DataHora dataHora;
   dataHora.dia = dia;
@@ -229,7 +305,7 @@ void _desmarcarConsulta(ListaConsultas *lista) {
 */
 
 void _listarConsultas(ListaConsultas *lista) {
-  printf("Listagem de Consultas\n");
+  printf("Listagem de Consultas:\n");
   listarConsultas(lista);
 }
 
@@ -242,7 +318,10 @@ void _listarConsultasDia(ListaConsultas *lista) {
   int dia, mes, ano;
 
   printf("Digite a data (DD MM AAAA): ");
-  scanf("%d %d %d", &dia, &mes, &ano);
+  if (scanf("%d %d %d", &dia, &mes, &ano) != 3) {
+    printf("Erro ao ler a data.\n");
+    return;
+  }
 
   printf("Listagem de Consultas do Dia\n");
   listarConsultasDia(lista, dia, mes, ano);
@@ -257,15 +336,19 @@ void _listarConsultasPaciente(ListaConsultas *lista) {
   char cpf[12];
 
   printf("Digite o CPF do paciente: ");
-  scanf("%s", cpf);
+  if (scanf("%s", cpf) != 1) {
+    printf("Erro ao ler o CPF do paciente.\n");
+    return;
+  }
 
-  printf("Listagem de Consultas do Paciente CPF %s:", cpf);
+  printf("Listagem de Consultas do Paciente CPF %s:\n", cpf);
   listarConsultasPaciente(lista, cpf);
 }
 
 /*
-  Essa função é a UI, que utiliza uma função de lista.h para exibir as descrições de uma
-  determinada consulta. Usa-se o CPF do paciente e a data da consulta para chamar.
+  Essa função é a UI, que utiliza uma função de lista.h para exibir as
+  descrições de uma determinada consulta. Usa-se o CPF do paciente e a data da
+  consulta para chamar.
 */
 
 void _listarDescricaoConsulta(ListaConsultas *lista) {
@@ -273,11 +356,22 @@ void _listarDescricaoConsulta(ListaConsultas *lista) {
   int dia, mes, ano, hora, minuto;
 
   printf("Digite o CPF do paciente: ");
-  scanf("%s", cpf);
+  if (scanf("%s", cpf) != 1) {
+    printf("Erro ao ler o CPF do paciente.\n");
+    return;
+  }
+
   printf("Digite a data da consulta (DD MM AAAA): ");
-  scanf("%d %d %d", &dia, &mes, &ano);
+  if (scanf("%d %d %d", &dia, &mes, &ano) != 3) {
+    printf("Erro ao ler a data da consulta.\n");
+    return;
+  }
+
   printf("Digite o horário da consulta (HH MM): ");
-  scanf("%d %d", &hora, &minuto);
+  if (scanf("%d %d", &hora, &minuto) != 2) {
+    printf("Erro ao ler o horário da consulta.\n");
+    return;
+  }
 
   DataHora dataHora;
   dataHora.dia = dia;
@@ -301,16 +395,23 @@ void _listarConsultasEspecialidadeMes(ListaConsultas *lista) {
 
   printf("Digite a especialidade: ");
   getchar();
-  fgets(especialidade, 50, stdin);
+  if (fgets(especialidade, 50, stdin) == NULL) {
+    printf("Erro ao ler a especialidade.\n");
+    return;
+  }
+
   printf("Digite o mês e o ano (MM AAAA): ");
-  scanf("%d %d", &mes, &ano);
+  if (scanf("%d %d", &mes, &ano) != 2) {
+    printf("Erro ao ler o mês e o ano.\n");
+    return;
+  }
 
   printf("Listagem de Consultas por Especialidade e Mês\n");
   listarConsultasEspecialidadeMes(lista, especialidade, mes, ano);
 }
 
 /*
-  Essa função é a UI, que utiliza uma função de lista.h para exibir os 
+  Essa função é a UI, que utiliza uma função de lista.h para exibir os
   pacientes de um médico, chamado por seu CRM
 */
 
@@ -318,41 +419,31 @@ void _listarPacientesPorMedico(ListaConsultas *lista) {
   char crm[10];
 
   printf("Digite o CRM do médico: ");
-  scanf("%s", crm);
+  if (scanf("%s", crm) != 1) {
+    printf("Erro ao ler o CRM do médico.\n");
+    return;
+  }
 
   printf("Listagem de Pacientes por Médico\n");
   listarPacientesPorMedico(lista, crm);
 }
 
 /*
-  Acabei deixando comentado, porém é uma função para limpar a tela, para lembrar
-  os dados que utilizei nos testes, mantive desligado, mas pode rodá-la, que fun-
-  ciona.
-*/
-
-void limparConsole() {
-#ifdef _WIN32
-  system("cls"); //Win
-#else
-  system(
-      "clear"); //Linux
-#endif
-}
-
-/*
   Função final, onde o programa será iniciado pelo usuário
 */
 
-void menu(ListaConsultas *listaConsultas, ListaMedicos *listaMedicos,  ListaPacientes *listaPacientes) {
+void menu(ListaConsultas *listaConsultas, ListaMedicos *listaMedicos,
+          ListaPacientes *listaPacientes) {
   int opcao;
 
   do {
     exibirMenu();
     printf("Digite a opção desejada: ");
-    scanf("%d", &opcao);
+    if (scanf("%d", &opcao) != 1) {
+      printf("Erro ao ler a entrada do usuário.\n");
+      return;
+    };
     printf("---------------------------------------------------\n");
-    // limparConsole(); // Deixe desabilitada a função. Mas pode usar
-    // tranquilamente.
 
     switch (opcao) {
     case 1:
